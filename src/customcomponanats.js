@@ -1,51 +1,53 @@
 import React, { Children, useState } from 'react';
 import { StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Image, DrawerItem, Modal,FlatList, } from 'react-native';
+import Settings from './Settings';
+import Dashboard from './dashboard';
+
+export const Footer = ({...props}) => {
+    const {navigation} = props;
+
+    // const [val, SetCount] = useState('')
 
 
-export const Footer = ({ ...props }) => {
-
-    const [val, SetCount] = useState('')
-
-
-    const handleOnpress = (data) => {
-        SetCount(data)
-        if (data == 'image') {
-            props.navigation.navigate('home')
-        }
-        if (data == 'coupen') {
-            props.navigation.navigate('fourthscreen')
-        }
+    const handleOnpress =() => {
+        // SetCount(data)
+        // if (data == 'image') {
+            navigation.navigate('Dashboard')
+        // }
+        // if (data == 'coupen') {
+            // props.navigation.navigate('fourthscreen')
+        // }
     }
 
 
     return (
 
         <View style={look.foot}>
-            <TouchableOpacity style={{ width: '20%' }} onPress={() => handleOnpress('image')}>
+            <TouchableOpacity style={{ width: '20%' }} onPress={handleOnpress}>
 
-                <Image style={look.image} source={val != 'image' ? require('./assets/images/application.png') : require('./assets/images/application.png')}></Image>
+                <Image style={look.image} source={require('./assets/images/application.png')}></Image>
 
             </TouchableOpacity>
             <TouchableOpacity style={{ width: '20%' }} onPress={() => props.navigation.navigate('Products')}>
 
-                <Image style={look.image} source={val != 'Product' ? require('./assets/images/list.png') : require('./assets/images/list.png')}></Image>
+                <Image style={look.image} source={ require('./assets/images/list.png')}></Image>
 
             </TouchableOpacity>
             <TouchableOpacity style={{ width: '20%' }} onPress={() => handleOnpress('coupen')}>
 
-                <Image style={look.image} source={val != 'Product' ? require('./assets/images/plus.png') : require('./assets/images/plus.png')}></Image>
+                <Image style={[look.image,{width:60,height:60}]} source={require('./assets/images/plus.png')}></Image>
 
 
             </TouchableOpacity>
-            <TouchableOpacity style={{ width: '20%' }} onPress={() => handleOnpress('coupen')}>
+            <TouchableOpacity style={{ width: '20%' }} onPress={() => props.navigation.navigate('Settings')}>
 
-                <Image style={look.image} source={val != 'Product' ? require('./assets/images/settings.png') : require('./assets/images/settings.png')}></Image>
+                <Image style={look.image} source={ require('./assets/images/settings.png')}></Image>
 
 
             </TouchableOpacity>
             <TouchableOpacity style={{ width: '20%', }} onPress={() => handleOnpress('coupen')}>
 
-                <Image style={look.image} source={val != 'Product' ? require('./assets/images/add-user.png') : require('./assets/images/list.png')}></Image>
+                <Image style={look.image} source={ require('./assets/images/list.png')}></Image>
 
 
             </TouchableOpacity>
@@ -88,11 +90,38 @@ export const Modals = ({ ...props }) => {
 
     )
 }
+
+
+export const Cards=({...props})=>{
+    const {source,text1,test2,margin,onPress,colors,colour}=props
+    return(
+        <TouchableOpacity style={[look.card,{margin:margin,backgroundColor:colors}]} onPress={onPress}>
+            <View style={{backgroundColor:colour,width:'50%',padding:10,borderRadius:10}}>
+
+            <Image style={{width:50,height:50,resizeMode:'contain'}} source={source}></Image>
+            </View>
+            <Text style={look.tests}>{text1}</Text>
+            <Text style={look.tests}>{test2}</Text>
+
+
+
+        </TouchableOpacity>
+    )
+}
+
+
+
+
+
+
 const look = StyleSheet.create({
 
     foot: {
         backgroundColor: '#0e1024', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10
     },
     image: { width: 50, height: 40, resizeMode: 'contain', alignSelf: "center" },
-    input: { backgroundColor: '#fff', borderRadius: 10, marginVertical: 5, height: 60, width: '100%' }
+    input: { backgroundColor: '#fff', borderRadius: 10, marginVertical: 5, height: 60, width: '100%' },
+    card:{width:"45%",padding:10,borderRadius:10},
+    test: { color: '#fff', fontSize: 20, marginVertical: 15, fontFamily: 'NuosuSIL-Regular' },
+    tests: { color: '#fff', fontSize: 20, marginVertical: 5, fontFamily: 'NuosuSIL-Regular' },
 })

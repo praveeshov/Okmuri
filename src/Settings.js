@@ -1,10 +1,11 @@
 
+import { useLinkProps } from "@react-navigation/native";
 import React, { useState } from "react";
 import { FlatList, Modal, View, StyleSheet, Text, Image, Alert, TextInput, TouchableOpacity, Picker, ScrollView } from 'react-native'
 import { Footer, Inputbox, Modals } from "./customcomponanats";
 
 
-const Settings = () => {
+const Settings = ({...props}) => {
 
 
     const DATA = [
@@ -188,69 +189,15 @@ const Settings = () => {
                 </Modals>
 
 
-                {/* <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalLAnguage}
-                    onRequestClose={() => {
-                        // Alert.alert("Modal has been closed.");
-                        setModalLanguage(!modalLAnguage);
-                    }}
-                >
-                    <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(100, 100, 100, 0.2)', flex: 1, margin: 20 }}>
-                        <View style={{ width: '100%' }}>
-                            <FlatList contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }} data={DATA} renderItem={({ item }) => {
-                                return (
-                                    <TouchableOpacity onPress={() => ChangeModalLanguage(item.language)} >
-
-                                        <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.language}</Text>
-                                    </TouchableOpacity>
-                                )
-                            }}
-                            >
-
-                            </FlatList>
-                        </View>
-                    </View>
-
-                </Modal> */}
-
-
-                {/* <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalplace}
-                    onRequestClose={() => {
-                        // Alert.alert("Modal has been closed.");
-                        setModalplace(!modalplace);
-                    }}
-                >
-                    <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(100, 100, 100, 0.2)', flex: 1, margin: 20 }}>
-                        <View style={{ width: '100%' }}>
-                            <FlatList contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }} data={DATAPLACE} renderItem={({ item }) => {
-                                return (
-                                    <TouchableOpacity onPress={() => ChangeModalplace(item.place)}>
-
-                                        <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.place}</Text>
-                                    </TouchableOpacity>
-                                )
-                            }}
-                            >
-
-                            </FlatList>
-                        </View>
-                    </View>
-
-                </Modal> */}
 
 
 
             </View>
-            <View style={{ flex: 3, backgroundColor: '#0e1024' }}>
+            <View style={{ flex: 2, backgroundColor: '#0e1024' }}>
 
             </View>
             <View style={{ flex: .6, backgroundColor: '#0e1024', justifyContent: 'flex-end' }}>
-                <Footer />
+                {/* <Footer navigation={props.navigation} /> */}
             </View>
         </View >
     )

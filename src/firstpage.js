@@ -31,7 +31,7 @@ const Firstpage = ({...props}) => {
 
                     <Text style={{ color: '#fff', fontSize: 20, fontWeight: '100' }}>  | Saifzoid</Text>
                 </View>
-                <TouchableOpacity onPress={()=> {props.navigation.navigate('Settings')}}>
+                <TouchableOpacity onPress={()=> {props.navigation.navigate('MyTabs')}}>
                     <Text style={{ color: '#fff' }}>SKIP   </Text>
                 </TouchableOpacity>
             </View>
