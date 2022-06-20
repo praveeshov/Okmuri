@@ -1,5 +1,5 @@
 import React, { Children, useState } from 'react';
-import { StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Image, DrawerItem, Modal,FlatList, } from 'react-native';
+import { StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Image, DrawerItem, Modal,FlatList,ActivityIndicator } from 'react-native';
 import Settings from './Settings';
 import Dashboard from './dashboard';
 
@@ -33,7 +33,7 @@ export const Footer = ({...props}) => {
                 <Image style={look.image} source={ require('./assets/images/list.png')}></Image>
 
             </TouchableOpacity>
-            <TouchableOpacity style={{ width: '20%' }} onPress={() => handleOnpress('coupen')}>
+            <TouchableOpacity style={{ width: '20%' }} onPress={() => props.navigation.navigate('addcontact')}>
 
                 <Image style={[look.image,{width:60,height:60}]} source={require('./assets/images/plus.png')}></Image>
 
@@ -47,7 +47,7 @@ export const Footer = ({...props}) => {
             </TouchableOpacity>
             <TouchableOpacity style={{ width: '20%', }} onPress={() => handleOnpress('coupen')}>
 
-                <Image style={look.image} source={ require('./assets/images/list.png')}></Image>
+                <Image style={look.image} source={ require('./assets/images/add-user.png')}></Image>
 
 
             </TouchableOpacity>
@@ -57,15 +57,26 @@ export const Footer = ({...props}) => {
     )
 }
 export const Inputbox = ({ ...props }) => {
-    const { onPress, text } = props;
+    const { onPress, text,placeholder } = props;
     return (
-        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={onPress}>
-            <TextInput placeholderTextColor={'#000'} placeholder='Please Select your Language' editable={false} style={[look.input, { borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text}>
+        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', }} onPress={onPress}>
+            <TextInput  placeholderTextColor={'#000'} placeholder={placeholder} editable={false} style={[look.input, {paddingLeft:10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text}>
             </TextInput>
-            <View style={{ position: 'relative', top: 25, right: 30 }}>
+            <View style={{ position: 'relative', top: 30, right: 30 }}>
 
                 <Image style={{ width: 10, height: 10 }} source={require('./assets/images/down.png')}></Image>
             </View>
+        </TouchableOpacity>
+    )
+}
+
+export const SinmpleInputbox = ({ ...props }) => {
+    const { onPress, text ,placeholder} = props;
+    return (
+        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={onPress}>
+            <TextInput placeholderTextColor={'#000'} placeholder={placeholder}  style={[look.input, {paddingLeft:10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text}>
+            </TextInput>
+           
         </TouchableOpacity>
     )
 }
@@ -109,7 +120,16 @@ export const Cards=({...props})=>{
     )
 }
 
-
+export const Activeindicator = () => (
+    <View style={[look.container, look.horizontal]}>
+      
+     
+      <ActivityIndicator size="large" color="#0000ff" />
+    </View>
+  );
+  
+  
+ 
 
 
 
@@ -124,4 +144,13 @@ const look = StyleSheet.create({
     card:{width:"45%",padding:10,borderRadius:10},
     test: { color: '#fff', fontSize: 20, marginVertical: 15, fontFamily: 'NuosuSIL-Regular' },
     tests: { color: '#fff', fontSize: 20, marginVertical: 5, fontFamily: 'NuosuSIL-Regular' },
+    container: {
+        flex: 1,
+        justifyContent: "center"
+      },
+      horizontal: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10
+      }
 })

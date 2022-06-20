@@ -62,7 +62,7 @@ const Dashboard = ({...props}) => {
             <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
                 <FlatList data={datas} numColumns={2} 
                     contentContainerStyle={{ flexDirection: 'column' }} renderItem={({ item }) => {
-                        
+                        console.log(item.slug,slug);
                         return (
 
                             <Cards colors={slug==item.slug?'blue':'#292d57'} colour={slug==item.slug?'#fff':'#292d57'} margin={9} onPress={() => cardclic(item.slug)} source={{ uri: urls + item.image }} text1={item.titile_e} test2={item.titile_m} />
