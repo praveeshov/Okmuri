@@ -61,7 +61,7 @@ export const Inputbox = ({ ...props }) => {
     const { onPress, text, placeholder } = props;
     return (
         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', }} onPress={onPress}>
-            <TextInput placeholderTextColor={'#000'} placeholder={placeholder} editable={false} style={[look.input, { paddingLeft: 10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text}>
+            <TextInput placeholderTextColor={'#000'} placeholder={placeholder}  editable={false} style={[look.input,  { paddingLeft: 10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text}>
             </TextInput>
             <View style={{ position: 'relative', top: 30, right: 30 }}>
 
@@ -173,7 +173,7 @@ export const Listcard = ({ ...props }) => {
         </View>
     )
 }
- 
+
 
 
 
