@@ -2,7 +2,7 @@
 import { useLinkProps } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { FlatList, Modal, View, StyleSheet, Text, Image, Alert, TextInput, TouchableOpacity, Picker, ScrollView } from 'react-native'
-import { Footer, Inputbox, Modals } from "./customcomponanats";
+import { Footer, Inputbox, Modals ,Header} from "./customcomponanats";
 
 
 const Settings = ({ ...props }) => {
@@ -77,10 +77,8 @@ const Settings = ({ ...props }) => {
     return (
         <View style={styles.mainview}>
             <View style={{ flex: 5 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}>
-                    <Image style={{ width: 30, height: 30 }} source={require('./assets/images/arrow-left.png')} />
-                    <Text style={{ color: '#fff', fontSize: 30, fontFamily: 'NuosuSIL-Regular' }}>  Settings</Text>
-                </View>
+               
+                <Header source={require('./assets/images/arrow-left.png')} text='Settings'/>
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.test}>Change your Language</Text>
                     {/* <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setModalLanguage(true)}>

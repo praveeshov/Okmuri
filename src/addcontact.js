@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, Image, StyleSheet, FlatList, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
-import { SinmpleInputbox, Inputbox, Modals, Activeindicator } from './customcomponanats';
+import { SinmpleInputbox, Inputbox, Modals, Activeindicator, Header, } from './customcomponanats';
+import { Apidatas } from './Functions';
 
 const Addcontact = () => {
 
@@ -21,39 +22,49 @@ const Addcontact = () => {
 
     useEffect(() => {
         fetchdata()
+
+
     }, [])
 
     const fetchdata = async () => {
-        SetIndicator(true)
-        try {
-            const response = await fetch('http://3.145.145.124:8000/contact/list/places/')
-            const json = await response.json();
-            SetPlaces(json)
-        } catch (error) {
-            console.error(error);
-        }
-        try {
-            const response = await fetch('http://3.145.145.124:8000/contact/list/category/')
-            const json = await response.json();
-            SetMaincat(json)
-            Subcatinputclick(json[0].slug)
+        const source = '/contact/list/places/';
+        const methord = 'GET'
+        const params = ''
 
-        } catch (error) {
-            console.error(error);
-        }
+        SetIndicator(true)
+        const result = await Apidatas(source, methord, params)
+        // console.log(result);
+        SetPlaces(result)
+
+        // try {
+        //     const response = await fetch('http://3.145.145.124:8000/contact/list/places/')
+        //     const json = await response.json();
+        //     SetPlaces(json)
+        // } catch (error) {
+        //     console.error(error);
+        // }
+        const source1 = '/contact/list/category/';
+        const methord1 = 'GET'
+        const params1 = ''
+        const data = await Apidatas(source1,methord1,params1)
+        SetMaincat(data)
+
+        // try {
+        //     const response = await fetch('http://3.145.145.124:8000/contact/list/category/')
+        //     const json = await response.json();
+        //     SetMaincat(json)
+        //     Subcatinputclick(json[0].slug)
+
+        // } catch (error) {
+        //     console.error(error);
+        // }
         SetIndicator(false)
 
     }
 
     const inputClick = () => {
         SetModalPlace(true)
-        // try{
-        //     const response=await fetch('http://3.145.145.124:8000/contact/list/places/')
-        //     const json=await response.json();
-        //     SetPlaces(json)
-        // }catch(error){
-        //     console.error(error);
-        // }
+
     }
     const ChangemodalPlace = (items) => {
         SetModalPlace(false)
@@ -76,16 +87,22 @@ const Addcontact = () => {
 
 
     const Subcatinputclick = async (items) => {
-        
-        SetIndicator(true)
-        try {
-            const response = await fetch('http://3.145.145.124:8000/contact/list/sub-category/?main_cat=' + items)
-            const json = await response.json();
-            SetSubat(json)
 
-        } catch (error) {
-            console.error(error);
-        }
+        SetIndicator(true)
+        const source1 = '/contact/list/sub-category/?main_cat='+items;
+        const methord1 = 'GET'
+        const params1 = ''
+        const data = await Apidatas(source1,methord1,params1)
+        SetSubat(data)
+
+        // try {
+        //     const response = await fetch('http://3.145.145.124:8000/contact/list/sub-category/?main_cat=' + items)
+        //     const json = await response.json();
+        //     SetSubat(json)
+
+        // } catch (error) {
+        //     console.error(error);
+        // }
         SetIndicator(false)
 
     }
@@ -98,12 +115,10 @@ const Addcontact = () => {
 
     return (
         <ScrollView style={styles.mainview}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}>
-                <Image style={{ width: 30, height: 30 }} source={require('./assets/images/arrow-left.png')} />
-                <Text style={{ color: '#fff', fontSize: 30, fontFamily: 'NuosuSIL-Regular' }}>  Add Contact</Text>
-            </View>
 
-            {/* {variable ?
+            <Header source={require('./assets/images/arrow-left.png')} text='Add Contact' />
+
+            {/* {indicator ?
             <Text style={styles.test}>jvtyvtyvgjyvgyvy</Text>
             :null} */}
             <View>
@@ -178,8 +193,8 @@ const Addcontact = () => {
                     }}>
                 </FlatList>
             </Modals>
-            <Modals visible={indicator} onRequestClose={() => { SetIndicator(false)}}>
-            <Activeindicator />
+            <Modals visible={indicator} onRequestClose={() => { SetIndicator(false) }}>
+                <Activeindicator />
             </Modals>
         </ScrollView>
     )
