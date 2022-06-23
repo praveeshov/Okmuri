@@ -41,18 +41,21 @@ const Settings = ({ ...props }) => {
 
     const [modalLAnguage, setModalLanguage] = useState(false);
     const [selectLanguage, setLanguage] = useState();
+
     const [modalplace, setModalplace] = useState(false);
-    const [SelectPlace, SetPlace] = useState()
+    const [SelectPlace, SetPlace] = useState([])
+    const [PickPlace,SetPickPlace]=useState()
 
     useEffect(() => {
         FetchData()
-    })
+    },[])
     const FetchData = async () => {
 
         try {
             const response = await fetch('http://3.145.145.124:8000/contact/list/places/')
             const json = await response.json();
             SetPlace(json)
+           
         } catch (error) {
             console.error(error)
         }
@@ -65,7 +68,8 @@ const Settings = ({ ...props }) => {
         setModalLanguage(false)
     }
     const ChangeModalplace = (items) => {
-        SetPlace(items)
+        // console.log(items);
+        SetPickPlace(items)
         setModalplace(false)
     }
 
@@ -91,19 +95,19 @@ const Settings = ({ ...props }) => {
                     </TouchableOpacity> */}
                     <Inputbox text={selectLanguage} placeholder="Select Your Language" onPress={() => setModalLanguage(true)} />
                     <Text style={styles.test}>Change your Place</Text>
-                    <Inputbox text={SelectPlace} placeholder="Select Your place" onPress={() => setModalplace(true)} />
+                    <Inputbox text={PickPlace} placeholder="Select Your place" onPress={() => {setModalplace(true)} }/>
 
                     <TouchableOpacity style={{ backgroundColor: 'blue', width: '100%', height: 60, marginTop: 35, alignSelf: 'center', borderRadius: 15, justifyContent: 'center' }}>
                         <Text style={{ color: '#FFF', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Submit</Text>
 
                     </TouchableOpacity>
                 </View>
-                <Modals visible={modalLAnguage} onRequestClose={() => { setModalLanguage(false) }}  >
+                <Modals visible={modalLAnguage} onRequestClose={() =>{ setModalLanguage(false) }}  >
                     <FlatList contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                         data={DATA}
                         renderItem={({ item }) => {
                             return (
-                                <TouchableOpacity onPress={() => ChangeModalLanguage(item.language)} >
+                                <TouchableOpacity onPress={() => {ChangeModalLanguage(item.language)}} >
                                     <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.language}</Text>
                                 </TouchableOpacity>
                             )
@@ -120,8 +124,9 @@ const Settings = ({ ...props }) => {
                     <FlatList contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                         data={SelectPlace}
                         renderItem={({ item }) => {
+                            // console.log(item.titile_e);
                             return (
-                                <TouchableOpacity onPress={() => ChangeModalplace(item.place)} >
+                                <TouchableOpacity onPress={() => {ChangeModalplace(item.titile_e)} }>
                                     <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.titile_e}    ({item.titile_m})</Text>
                                 </TouchableOpacity>
                             )

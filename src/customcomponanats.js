@@ -94,6 +94,7 @@ export const Modals = ({ ...props }) => {
         >
             <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(100, 100, 100, 0.2)', flex: 1, margin: 20 }}>
                 <View style={{ width: '100%' }}>
+        
                     {children}
                 </View>
             </View>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { Header, Listcard, Inputbox, Modals } from './customcomponanats';
 import { Apidatas } from './Functions';
-import {AccordionList} from "accordion-collapse-react-native";
+import { AccordionList } from "accordion-collapse-react-native";
 import { Separator } from 'native-base';
 
 const Contactlist = () => {
@@ -25,30 +25,67 @@ const Contactlist = () => {
     const [subchange, Picksubcat] = useState()
     const [SubmitSubcat, SetSubmitsubcat] = useState()
 
+    const [QueryParams, SetQueryParams] = useState({})
+
 
     useEffect(() => {
         Fetchdata()
 
     }, [])
 
-    const ChangePlace = (item) => {
-        Pickplace(item.titile_e)
-        Setmodalplace(false)
-        SetSubmitPlace(item.id)
 
+
+    const ChangePlace = (item, params) => {
+        Setmodalplace(false)
+        
+        // console.log(item);
+        let Obj = QueryParams
+        if (params == '&place=') {
+            Obj[params] = item.id
+            Pickplace(item.titile_e)
+            SetSubmitPlace(item.id)
+          
+        } else {
+            Obj[params] = item.slug
+            
+            // console.log(Obj);
+            if (params == '&main_cat=') {
+
+                Pickmaincat(item.titile_e)
+                FetchSubcat(item.slug)
+                Setsubmitmain(item.slug)
+                Picksubcat('')
+            
+
+            }
+            else if (params == '&sub_cat=') {
+                Picksubcat(item.titile_e)
+                SetSubmitsubcat(item.slug)
+
+            }
+            // SetQueryParams(Obj)
+
+        }
+        
+        SetQueryParams(Obj)
+        
+
+        // console.log(Obj);
+        Setmodalmaincats(false)
+        Setmodalsubcat(false)
     }
 
     const ChangeMaincat = (item) => {
-        Pickmaincat(item.titile_e)
-        Setmodalmaincats(false)
-        FetchSubcat(item.slug)
+        // Pickmaincat(item.titile_e)
+        // Setmodalmaincats(false)
+        // FetchSubcat(item.slug)
         // Picksubcat('')
         Setsubmitmain(item.slug)
+        // Picksubcat('')
     }
     const ChangeSubcat = (item) => {
         Picksubcat(item.titile_e)
         Setmodalsubcat(false)
-        console.log(item.slug);
         SetSubmitsubcat(item.slug)
     }
     const FetchSubcat = async (slug) => {
@@ -63,16 +100,46 @@ const Contactlist = () => {
         Picksubcat('')
         Pickmaincat('')
         Pickplace('')
+        Setsubmitmain('')
+        SetSubmitPlace('')
+        SetSubmitsubcat('')
+        SetQueryParams({})
+        // console.log(QueryParams);
+
+
+        // for(const x in QueryParams){
+        //     console.log(`${x}${QueryParams[x]}`);
+        // }
     }
+// console.log(QueryParams);
 
-    const Submit = async (submitmain, SubmitPlace, SubmitSubcat) => {
 
-        //http://3.145.145.124:8000/contact/list/contacts/?main_cat=other&place=3&sub_cat=itc
-        const source = '/contact/list/contacts/?main_cat=' + submitmain + '&' + 'place=' + SubmitPlace + '&' + 'sub_cat=' + SubmitSubcat;
+    const Submit = async () => {
+        console.log(QueryParams);
+        // console.log(submitmain,"---",SubmitPlace,'---', SubmitSubcat,"-------submit-------->");
+       // const isEmpty = Object.keys(obj).length === 0;
+        if (Object.keys(QueryParams).length!=0){
+            console.log('not null');
+        }else{
+            console.log(' null');
+        }
+        let source = ''
         const method = 'GET';
-        const params = '';
-        const result = await Apidatas(source, method, params)
+        const params = '7';
+        let result = []
+        if (params!='') {
+            //http://3.145.145.124:8000/contact/list/contacts/?main_cat=other&place=3&sub_cat=itc
+            source = '/contact/list/contacts/?';
+            // console.log(source,'source***********************');
+
+            result = await Apidatas(source, method, params)
+            // console.log("true");
+        } else {
+            // console.log("--------------------------");
+        }
+
         Setcontact(result)
+        // console.log('jjjjjjjjj');
     }
 
     const Fetchdata = async () => {
@@ -80,7 +147,8 @@ const Contactlist = () => {
         const source1 = '/contact/list/places/';
         const method1 = 'GET';
         const params1 = '';
-        const result1 = await Apidatas(source1, method1, params1)
+        let result1 = await Apidatas(source1, method1, params1)
+        // console.log(result1);
         Setplaces(result1)
 
         const source2 = '/contact/list/category/';
@@ -100,43 +168,43 @@ const Contactlist = () => {
     }
     const urls = 'http://3.145.145.124:8000'
 
-//   const  state={
-//         list:[
-//             {
-//               id:1,
-//               title: 'Getting Started',
-//               body: 'React native Accordion/Collapse component, very good to use in toggles & show/hide content'
-//             },
-//             {
-//               id:2,
-//               title: 'Components',
-//               body: 'AccordionList,Collapse,CollapseHeader & CollapseBody'
-//             }
-//             ],
-//       }
-      
-//    const _head=(item)=>{
-//           return(
-//               <Separator bordered style={{alignItems:'center'}}>
-//                 <Text>{item.title}</Text>
-//               </Separator>
-//           );
-//       }
-      
-//     const  _body=(item)=>{
-//           return (
-//               <View style={{padding:10}}>
-//                 <Text style={{textAlign:'center'}}>{item.body}</Text>
-//               </View>
-//           );
-//       }
-    
+    //   const  state={
+    //         list:[
+    //             {
+    //               id:1,
+    //               title: 'Getting Started',
+    //               body: 'React native Accordion/Collapse component, very good to use in toggles & show/hide content'
+    //             },
+    //             {
+    //               id:2,
+    //               title: 'Components',
+    //               body: 'AccordionList,Collapse,CollapseHeader & CollapseBody'
+    //             }
+    //             ],
+    //       }
+
+    //    const _head=(item)=>{
+    //           return(
+    //               <Separator bordered style={{alignItems:'center'}}>
+    //                 <Text>{item.title}</Text>
+    //               </Separator>
+    //           );
+    //       }
+
+    //     const  _body=(item)=>{
+    //           return (
+    //               <View style={{padding:10}}>
+    //                 <Text style={{textAlign:'center'}}>{item.body}</Text>
+    //               </View>
+    //           );
+    //       }
+
     return (
 
 
 
         <View style={styles.mainview}>
-{/* 
+            {/* 
             <Header source={require('./assets/images/arrow-left.png')} text='Contact List' />
             <AccordionList
             list={state.list}
@@ -145,7 +213,7 @@ const Contactlist = () => {
             keyExtractor={item => `${item.id}`}
           /> */}
 
-
+            <Header source={require('./assets/images/arrow-left.png')} text='Contact List' />
 
             <View style={{ backgroundColor: '#201b42', width: '100%', borderRadius: 10, alignItems: 'center', justifyContent: 'center', paddingVertical: 10 }}>
                 <TouchableOpacity onPress={() => Setdropdown(!dropdown)} style={{ alignItems: 'center', height: 50, backgroundColor: '#181336', width: '95%', borderRadius: 10, flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
@@ -163,11 +231,19 @@ const Contactlist = () => {
                             </View>
                             <Modals visible={modalplace} onRequestClose={() => { Setmodalplace(false) }}>
                                 <FlatList
+                                    ListHeaderComponent={() => {
+                                        return (
+
+                                            <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select your place</Text></View>
+                                        )
+                                    }}
                                     data={places}
                                     contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                                     renderItem={({ item }) => {
                                         return (
-                                            <TouchableOpacity onPress={() => ChangePlace(item)}>
+
+                                            <TouchableOpacity onPress={() => ChangePlace(item, '&place=')}>
+
                                                 <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.titile_e}</Text>
                                             </TouchableOpacity>
                                         )
@@ -187,11 +263,17 @@ const Contactlist = () => {
                             </View>
                             <Modals visible={modalmaincats} onRequestClose={() => { Setmodalmaincats(false) }}>
                                 <FlatList
+                                    ListHeaderComponent={() => {
+                                        return (
+
+                                            <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select One Category</Text></View>
+                                        )
+                                    }}
                                     data={maincats}
                                     contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                                     renderItem={({ item }) => {
                                         return (
-                                            <TouchableOpacity onPress={() => ChangeMaincat(item)}>
+                                            <TouchableOpacity onPress={() => ChangePlace(item, '&main_cat=')}>
                                                 <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.titile_e}  ({item.titile_m})</Text>
                                             </TouchableOpacity>
                                         )
@@ -211,12 +293,18 @@ const Contactlist = () => {
                             </View>
                             <Modals visible={modalsubcat} onRequestClose={() => { Setmodalsubcat(false) }}>
                                 <FlatList
+                                ListHeaderComponent={()=>{
+                                    return(
+
+                                        <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select One Category</Text></View>
+                                    )
+                                }}
                                     data={subcat}
                                     contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                                     renderItem={({ item }) => {
                                         // console.log(item);
                                         return (
-                                            <TouchableOpacity onPress={() => ChangeSubcat(item)}>
+                                            <TouchableOpacity onPress={() => ChangePlace(item, '&sub_cat=')}>
                                                 <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.titile_e}  ({item.titile_m})</Text>
                                             </TouchableOpacity>
                                         )
@@ -231,7 +319,7 @@ const Contactlist = () => {
                                 <Text style={{ color: 'blue', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Reset</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => { Submit(submitmain, SubmitPlace, SubmitSubcat) }} style={[styles.buttons, { backgroundColor: 'blue' }]} >
-                                <Text style={{ color: '#FFF', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Submit</Text>
+                                <Text style={{ color: '#FFF', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Search</Text>
                             </TouchableOpacity>
                         </View>
 
