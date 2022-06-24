@@ -37,59 +37,38 @@ const Contactlist = () => {
 
     const ChangePlace = (item, params) => {
         Setmodalplace(false)
-        
+
         // console.log(item);
         let Obj = QueryParams
         if (params == '&place=') {
             Obj[params] = item.id
             Pickplace(item.titile_e)
             SetSubmitPlace(item.id)
-          
+
         } else {
             Obj[params] = item.slug
-            
+
             // console.log(Obj);
             if (params == '&main_cat=') {
 
-                Pickmaincat(item.titile_e)
+                Pickmaincat(item.titile_e+'  '+item.titile_m)
+                console.log(mainchange);
                 FetchSubcat(item.slug)
                 Setsubmitmain(item.slug)
-                Picksubcat('')
-            
-
+                Picksubcat('Select One Category')
             }
             else if (params == '&sub_cat=') {
                 Picksubcat(item.titile_e)
                 SetSubmitsubcat(item.slug)
-
             }
-            // SetQueryParams(Obj)
-
         }
-        
-        SetQueryParams(Obj)
-        
 
-        // console.log(Obj);
+        SetQueryParams(Obj)
         Setmodalmaincats(false)
         Setmodalsubcat(false)
     }
 
-    const ChangeMaincat = (item) => {
-        // Pickmaincat(item.titile_e)
-        // Setmodalmaincats(false)
-        // FetchSubcat(item.slug)
-        // Picksubcat('')
-        Setsubmitmain(item.slug)
-        // Picksubcat('')
-    }
-    const ChangeSubcat = (item) => {
-        Picksubcat(item.titile_e)
-        Setmodalsubcat(false)
-        SetSubmitsubcat(item.slug)
-    }
     const FetchSubcat = async (slug) => {
-
         const source = '/contact/list/sub-category/?main_cat=' + slug;
         const method = 'GET';
         const params = '';
@@ -97,53 +76,36 @@ const Contactlist = () => {
         Setsubcats(result)
     }
     const Reset = () => {
-        Picksubcat('')
-        Pickmaincat('')
-        Pickplace('')
+        Picksubcat('Select One Category')
+        Pickmaincat('Select One Category')
+        Pickplace('Please Select your Place')
         Setsubmitmain('')
         SetSubmitPlace('')
         SetSubmitsubcat('')
         SetQueryParams({})
-        // console.log(QueryParams);
+        Setcontact([])
 
-
-        // for(const x in QueryParams){
-        //     console.log(`${x}${QueryParams[x]}`);
-        // }
     }
-// console.log(QueryParams);
-
-
     const Submit = async () => {
-        console.log(QueryParams);
-        // console.log(submitmain,"---",SubmitPlace,'---', SubmitSubcat,"-------submit-------->");
-       // const isEmpty = Object.keys(obj).length === 0;
-        if (Object.keys(QueryParams).length!=0){
-            console.log('not null');
-        }else{
-            console.log(' null');
+        let sum = ''
+        for (const x in QueryParams) {
+            sum = sum + (`${x}${QueryParams[x]}`);
         }
         let source = ''
         const method = 'GET';
         const params = '7';
         let result = []
-        if (params!='') {
-            //http://3.145.145.124:8000/contact/list/contacts/?main_cat=other&place=3&sub_cat=itc
-            source = '/contact/list/contacts/?';
-            // console.log(source,'source***********************');
+        if (sum != '') {
 
+            source = '/contact/list/contacts/?' + sum;
             result = await Apidatas(source, method, params)
-            // console.log("true");
-        } else {
-            // console.log("--------------------------");
+            Setcontact(result)
         }
-
-        Setcontact(result)
-        // console.log('jjjjjjjjj');
+            Setdropdown(false)
+        
     }
 
     const Fetchdata = async () => {
-
         const source1 = '/contact/list/places/';
         const method1 = 'GET';
         const params1 = '';
@@ -156,15 +118,6 @@ const Contactlist = () => {
         const params2 = ''
         const result2 = await Apidatas(source2, methord2, params2)
         Setmaincats(result2)
-
-
-        // try {
-        //     const response = await fetch('http://3.145.145.124:8000/contact/list/contacts/')
-        //     const json = await response.json();
-        //     Setcontact(json)
-        // } catch (error) {
-        //     console.error(error);
-        // }
     }
     const urls = 'http://3.145.145.124:8000'
 
@@ -293,12 +246,12 @@ const Contactlist = () => {
                             </View>
                             <Modals visible={modalsubcat} onRequestClose={() => { Setmodalsubcat(false) }}>
                                 <FlatList
-                                ListHeaderComponent={()=>{
-                                    return(
+                                    ListHeaderComponent={() => {
+                                        return (
 
-                                        <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select One Category</Text></View>
-                                    )
-                                }}
+                                            <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select One Category</Text></View>
+                                        )
+                                    }}
                                     data={subcat}
                                     contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                                     renderItem={({ item }) => {
@@ -316,10 +269,10 @@ const Contactlist = () => {
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <TouchableOpacity onPress={() => { Reset() }} style={styles.buttons}>
-                                <Text style={{ color: 'blue', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Reset</Text>
+                                <Text style={{ color: 'blue', fontSize: 18, fontWeight: '500', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Reset</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => { Submit(submitmain, SubmitPlace, SubmitSubcat) }} style={[styles.buttons, { backgroundColor: 'blue' }]} >
-                                <Text style={{ color: '#FFF', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Search</Text>
+                                <Text style={{ color: '#FFF', fontSize: 18, fontWeight: '500', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Search</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -331,7 +284,7 @@ const Contactlist = () => {
                 // contentContainerStyle={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                 renderItem={({ item }) => {
                     return (
-                        <Listcard service={item.sub_cat.titile_e} maincat={item.main_cat.titile_e} text={item.name_e} text1={item.place.titile_e} phone={item.phone} source={{ uri: urls + item.main_cat.image }} />
+                        <Listcard service={item.sub_cat.titile_e} maincat={item.main_cat.titile_e} text={item.name_e} text1={item.place.titile_e} phone={item.phone} source={{ uri: urls + item.sub_cat.image }} />
 
                     )
                 }}
@@ -347,7 +300,7 @@ const Contactlist = () => {
 const styles = StyleSheet.create({
     mainview: { flex: 1, backgroundColor: '#0e1024', padding: 10, },
     test: { color: '#fff', fontSize: 20, marginVertical: 15, fontFamily: 'NuosuSIL-Regular', marginLeft: 10 },
-    buttons: { borderColor: 'blue', borderWidth: 2, backgroundColor: '#fff', width: '48%', marginTop: 10, height: 60, borderRadius: 15, justifyContent: 'center' }
+    buttons: { borderColor: 'blue', borderWidth: 2, backgroundColor: '#fff', width: '48%', marginTop: 10, height: 55, borderRadius: 15, justifyContent: 'center' }
 })
 
 export default Contactlist;
