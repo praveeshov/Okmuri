@@ -2,7 +2,7 @@
 import { useLinkProps } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { FlatList, Modal, View, StyleSheet, Text, Image, Alert, TextInput, TouchableOpacity, Picker, ScrollView } from 'react-native'
-import { Footer, Inputbox, Modals ,Header} from "./customcomponanats";
+import { Footer, Inputbox, Modals, Header } from "./customcomponanats";
 
 
 const Settings = ({ ...props }) => {
@@ -36,26 +36,26 @@ const Settings = ({ ...props }) => {
     ];
 
 
-    
+
 
 
     const [modalLAnguage, setModalLanguage] = useState(false);
-    const [selectLanguage, setLanguage] = useState();
+    const [selectLanguage, setLanguage] = useState('Select Your Language');
 
     const [modalplace, setModalplace] = useState(false);
     const [SelectPlace, SetPlace] = useState([])
-    const [PickPlace,SetPickPlace]=useState()
+    const [PickPlace, SetPickPlace] = useState('Select Your Place')
 
     useEffect(() => {
         FetchData()
-    },[])
+    }, [])
     const FetchData = async () => {
 
         try {
             const response = await fetch('http://3.145.145.124:8000/contact/list/places/')
             const json = await response.json();
             SetPlace(json)
-           
+
         } catch (error) {
             console.error(error)
         }
@@ -81,8 +81,8 @@ const Settings = ({ ...props }) => {
     return (
         <View style={styles.mainview}>
             <View style={{ flex: 5 }}>
-               
-                <Header source={require('./assets/images/arrow-left.png')} text='Settings'/>
+
+                <Header source={require('./assets/images/arrow-left.png')} text='Settings' />
                 <View style={{ marginTop: 15 }}>
                     <Text style={styles.test}>Change your Language</Text>
                     {/* <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setModalLanguage(true)}>
@@ -95,19 +95,25 @@ const Settings = ({ ...props }) => {
                     </TouchableOpacity> */}
                     <Inputbox text={selectLanguage} placeholder="Select Your Language" onPress={() => setModalLanguage(true)} />
                     <Text style={styles.test}>Change your Place</Text>
-                    <Inputbox text={PickPlace} placeholder="Select Your place" onPress={() => {setModalplace(true)} }/>
+                    <Inputbox text={PickPlace} placeholder="Select Your place" onPress={() => { setModalplace(true) }} />
 
                     <TouchableOpacity style={{ backgroundColor: 'blue', width: '100%', height: 60, marginTop: 35, alignSelf: 'center', borderRadius: 15, justifyContent: 'center' }}>
                         <Text style={{ color: '#FFF', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Submit</Text>
 
                     </TouchableOpacity>
                 </View>
-                <Modals visible={modalLAnguage} onRequestClose={() =>{ setModalLanguage(false) }}  >
+                <Modals visible={modalLAnguage} onRequestClose={() => { setModalLanguage(false) }}  >
                     <FlatList contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                         data={DATA}
+                        ListHeaderComponent={() => {
+                            return (
+
+                                <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select your Language</Text></View>
+                            )
+                        }}
                         renderItem={({ item }) => {
                             return (
-                                <TouchableOpacity onPress={() => {ChangeModalLanguage(item.language)}} >
+                                <TouchableOpacity onPress={() => { ChangeModalLanguage(item.language) }} >
                                     <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.language}</Text>
                                 </TouchableOpacity>
                             )
@@ -123,10 +129,16 @@ const Settings = ({ ...props }) => {
                 <Modals visible={modalplace} onRequestClose={() => { setModalplace(false) }}  >
                     <FlatList contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                         data={SelectPlace}
+                        ListHeaderComponent={() => {
+                            return (
+
+                                <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select your place</Text></View>
+                            )
+                        }}
                         renderItem={({ item }) => {
                             // console.log(item.titile_e);
                             return (
-                                <TouchableOpacity onPress={() => {ChangeModalplace(item.titile_e)} }>
+                                <TouchableOpacity onPress={() => { ChangeModalplace(item.titile_e) }}>
                                     <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.titile_e}    ({item.titile_m})</Text>
                                 </TouchableOpacity>
                             )

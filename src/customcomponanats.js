@@ -6,47 +6,51 @@ import styles from 'react-native-material-dropdown/src/components/dropdown/style
 
 export const Footer = ({ ...props }) => {
     const { navigation } = props;
+    const [navData, setNavData] = useState('')
 
-    // const [val, SetCount] = useState('')
 
-
-    const handleOnpress = () => {
-        // SetCount(data)
-        // if (data == 'image') {
-        navigation.navigate('Dashboard')
-        // }
-        // if (data == 'coupen') {
-        // props.navigation.navigate('fourthscreen')
-        // }
+    const clickNavigation = (data) => {
+        setNavData(data)
+        if (data == 'contact') {
+            navigation.navigate('contactlist')
+        } else if (data == 'addcntct') {
+            navigation.navigate('addcontact')
+        } else if (data == 'settings') {
+            navigation.navigate('Settings')
+        } else if (data == 'dashboard') {
+            navigation.navigate('Dashboard')
+        } else if (data == 'user') {
+            navigation.navigate('aboutadmin')
+        }
     }
 
 
     return (
 
         <View style={look.foot}>
-            <TouchableOpacity style={{ width: '20%' }} onPress={handleOnpress}>
+            <TouchableOpacity style={{ width: '20%' }} onPress={() => clickNavigation('dashboard')}>
 
-                <Image style={look.image} source={require('./assets/images/application.png')}></Image>
-
-            </TouchableOpacity>
-            <TouchableOpacity style={{ width: '20%' }} onPress={() => props.navigation.navigate('contactlist')}>
-
-                <Image style={look.image} source={require('./assets/images/list.png')}></Image>
+                <Image style={look.image} source={navData == 'dashboard' ? require('./assets/images/application1.png') : require('./assets/images/application.png')}></Image>
 
             </TouchableOpacity>
-            <TouchableOpacity style={{ width: '20%' }} onPress={() => props.navigation.navigate('addcontact')}>
+            <TouchableOpacity style={{ width: '20%' }} onPress={() => clickNavigation('contact')}>
+
+                <Image style={look.image} source={navData == 'contact' ? require('./assets/images/list1.png') : require('./assets/images/list.png')}></Image>
+
+            </TouchableOpacity>
+            <TouchableOpacity style={{ width: '20%' }} onPress={() => clickNavigation('addcntct')}>
 
                 <Image style={[look.image, { width: 50, height: 50 }]} source={require('./assets/images/plus.png')}></Image>
 
 
             </TouchableOpacity>
-            <TouchableOpacity style={{ width: '20%' }} onPress={() => props.navigation.navigate('Settings')}>
+            <TouchableOpacity style={{ width: '20%' }} onPress={() => clickNavigation('settings')}>
 
-                <Image style={look.image} source={require('./assets/images/settings.png')}></Image>
+                <Image style={look.image} source={navData == 'settings' ? require('./assets/images/settings1.png') : require('./assets/images/settings.png')}></Image>
 
 
             </TouchableOpacity>
-            <TouchableOpacity style={{ width: '20%', }} onPress={() => handleOnpress('coupen')}>
+            <TouchableOpacity style={{ width: '20%', }} onPress={() => clickNavigation('user')}>
 
                 <Image style={look.image} source={require('./assets/images/add-user.png')}></Image>
 
@@ -60,10 +64,14 @@ export const Footer = ({ ...props }) => {
 export const Inputbox = ({ ...props }) => {
     const { onPress, text, placeholder } = props;
     return (
-        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', }} onPress={onPress}>
-            <TextInput placeholderTextColor={'#000'} placeholder={placeholder}  editable={false} style={[look.input,  { paddingLeft: 10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' ,fontSize:18,fontWeight:'bold',}]} numberOfLines={1} value={text}>
-            </TextInput>
-            <View style={{ position: 'relative', top: 30, right: 30 }}>
+        <TouchableOpacity style={{ borderRadius: 10, padding: 20, marginVertical: 5, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff', borderColor: 'blue', borderWidth: 1 }} onPress={onPress}>
+            {/* <TextInput placeholderTextColor={'#000'} placeholder={placeholder}  editable={false} style={[look.input,  { paddingLeft: 10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' ,fontSize:18,fontWeight:'bold',}]} numberOfLines={1} value={text}>
+            </TextInput> */}
+            <View style={{  width: '70%' }}>
+
+                <Text style={{ color: text == placeholder ? '#b3b3b5' : 'blue', fontSize: 18, fontWeight: 'bold' }} numberOfLines={1}>{text}</Text>
+            </View>
+            <View style={{ alignSelf: 'center' }}>
 
                 <Image style={{ width: 10, height: 10 }} source={require('./assets/images/down.png')}></Image>
             </View>
@@ -75,7 +83,7 @@ export const SinmpleInputbox = ({ ...props }) => {
     const { onPress, text, placeholder } = props;
     return (
         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={onPress}>
-            <TextInput placeholderTextColor={'#000'} placeholder={placeholder} style={[look.input, { paddingLeft: 10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text}>
+            <TextInput placeholderTextColor={'#b3b3b5'} placeholder={placeholder} style={[look.input, { paddingLeft: 10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text}>
             </TextInput>
 
         </TouchableOpacity>
@@ -94,7 +102,7 @@ export const Modals = ({ ...props }) => {
         >
             <View style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(100, 100, 100, 0.2)', flex: 1, margin: 20 }}>
                 <View style={{ width: '100%' }}>
-        
+
                     {children}
                 </View>
             </View>
@@ -134,7 +142,9 @@ export const Header = ({ ...props }) => {
     const { source, text } = props
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}>
-            <Image style={{ width: 30, height: 30 }} source={source} />
+            <TouchableOpacity>
+                <Image style={{ width: 30, height: 30 }} source={source} />
+            </TouchableOpacity>
             <Text style={{ color: '#fff', fontSize: 30, fontFamily: 'NuosuSIL-Regular' }}> {text}</Text>
         </View>
     )

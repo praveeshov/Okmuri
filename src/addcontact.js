@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, Image, StyleSheet, FlatList, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { Modal, View, Text, Image, StyleSheet, FlatList, TouchableOpacity, ScrollView, ActivityIndicator ,StatusBar} from 'react-native';
 import { SinmpleInputbox, Inputbox, Modals, Activeindicator, Header, } from './customcomponanats';
 import { Apidatas } from './Functions';
 
@@ -7,15 +7,15 @@ const Addcontact = () => {
 
     const [modalplace, SetModalPlace] = useState(false)
     const [Selectplaces, SetPlaces] = useState([]);
-    const [place, Showplace] = useState('')
+    const [place, Showplace] = useState('Select Your Place')
 
     const [ModalMaincat, ShowModalMaincat] = useState(false)
     const [Selectmaincat, SetMaincat] = useState([])
-    const [Maincat, ShowMaincat] = useState('tasci')
+    const [Maincat, ShowMaincat] = useState('Select One category')
 
     const [ModalSubcat, showModalSubcat] = useState(false)
     const [SelectSubcat, SetSubat] = useState([])
-    const [Subcat, ShowSubcat] = useState('')
+    const [Subcat, ShowSubcat] = useState('Select One category')
 
 
     const [indicator, SetIndicator] = useState(false)
@@ -68,7 +68,7 @@ const Addcontact = () => {
     }
     const ChangemodalPlace = (items) => {
         SetModalPlace(false)
-        Showplace(items)
+        Showplace(items.titile_e+'  ('+items.titile_m+')')
     }
 
 
@@ -78,9 +78,9 @@ const Addcontact = () => {
     const ChangeMaincat = (items) => {
         SetIndicator(true)
         ShowModalMaincat(false)
-        ShowMaincat(items)
-        Subcatinputclick(items)
-        ShowSubcat('')
+        ShowMaincat(items.titile_e+'  ('+items.titile_m+')')
+        Subcatinputclick(items.slug)
+        ShowSubcat('Select One Category')
         SetIndicator(false)
 
     }
@@ -108,14 +108,20 @@ const Addcontact = () => {
     }
 
     const ChangeSubcat = (item) => {
-        ShowSubcat(item)
+        ShowSubcat(item.titile_e+'  ('+item.titile_m+')')
         showModalSubcat(false)
+    }
+
+    const reSet=()=>{
+        Showplace('Select Your Place')
+        ShowMaincat('Select One Category')
+        ShowSubcat('Select One Category')
 
     }
 
     return (
         <ScrollView style={styles.mainview}>
-
+            <StatusBar backgroundColor={'#0e1024'} barStyle={'light-content'}/>
             <Header source={require('./assets/images/arrow-left.png')} text='Add Contact' />
 
             {/* {indicator ?
@@ -129,23 +135,18 @@ const Addcontact = () => {
                 <Text style={styles.test}>Enter Your Mobile Number</Text>
                 <SinmpleInputbox placeholder="Enter Your Mobile Number"></SinmpleInputbox>
                 <Text style={styles.test}>Select Your Place</Text>
-                <Inputbox placeholder='Please Select your Place' text={place} onPress={() => inputClick()}></Inputbox>
+                <Inputbox placeholder={'Select Your Place'} text={place}  onPress={() => inputClick()}></Inputbox>
                 <Text style={styles.test}>Select One Main Category</Text>
                 <Inputbox placeholder='Select One Category' text={Maincat} onPress={() => Maincatinputclick()}></Inputbox>
                 <Text style={styles.test}>Select One Sub Category</Text>
-                <Inputbox placeholder='Please Select your Sub Category' text={Subcat} onPress={() => showModalSubcat(!ModalSubcat)}></Inputbox>
+                <Inputbox placeholder='Select One Category' text={Subcat} onPress={() => showModalSubcat(!ModalSubcat)}></Inputbox>
                 <View style={{ justifyContent: 'space-around', flexDirection: 'row', marginBottom: 50 }}>
-
-                    <TouchableOpacity style={{ borderColor: 'blue', borderWidth: 2, backgroundColor: '#fff', width: '45%', marginTop: 10, height: 60, alignSelf: 'center', borderRadius: 15, justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={()=>{reSet()}} style={{ borderColor: 'blue', borderWidth: 2, backgroundColor: '#fff', width: '45%', marginTop: 10, height: 60, alignSelf: 'center', borderRadius: 15, justifyContent: 'center' }}>
                         <Text style={{ color: 'blue', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Reset</Text>
-
                     </TouchableOpacity>
                     <TouchableOpacity style={{ backgroundColor: 'blue', width: '45%', marginTop: 10, height: 60, alignSelf: 'center', borderRadius: 15, justifyContent: 'center' }} >
                         <Text style={{ color: '#FFF', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Submit</Text>
-
                     </TouchableOpacity>
-
-
                 </View>
 
             </View>
@@ -158,7 +159,7 @@ const Addcontact = () => {
                     contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                     renderItem={({ item }) => {
                         return (
-                            <TouchableOpacity onPress={() => ChangemodalPlace(item.titile_e)}>
+                            <TouchableOpacity onPress={() => ChangemodalPlace(item)}>
                                 <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.titile_e} ({item.titile_m})</Text>
                             </TouchableOpacity>
                         )
@@ -169,11 +170,17 @@ const Addcontact = () => {
             <Modals visible={ModalMaincat} onRequestClose={() => { ShowModalMaincat(false) }}>
                 <FlatList
                     data={Selectmaincat}
+                    ListHeaderComponent={() => {
+                        return (
+
+                            <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select One Category</Text></View>
+                        )
+                    }}
                     contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                     renderItem={({ item }) => {
                         return (
-                            <TouchableOpacity onPress={() => ChangeMaincat(item.slug)}>
-                                <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.slug}</Text>
+                            <TouchableOpacity onPress={() => ChangeMaincat(item)}>
+                                <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.titile_e}  ({item.titile_m})</Text>
                             </TouchableOpacity>
                         )
                     }}>
@@ -183,10 +190,16 @@ const Addcontact = () => {
             <Modals visible={ModalSubcat} onRequestClose={() => { showModalSubcat(false) }}>
                 <FlatList
                     data={SelectSubcat}
+                    ListHeaderComponent={() => {
+                        return (
+
+                            <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select One Category</Text></View>
+                        )
+                    }}
                     contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                     renderItem={({ item }) => {
                         return (
-                            <TouchableOpacity onPress={() => ChangeSubcat(item.titile_e)}>
+                            <TouchableOpacity onPress={() => ChangeSubcat(item)}>
                                 <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.titile_e}    ({item.titile_m})</Text>
                             </TouchableOpacity>
                         )

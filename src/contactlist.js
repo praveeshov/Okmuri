@@ -12,20 +12,20 @@ const Contactlist = () => {
 
     const [modalplace, Setmodalplace] = useState(false)
     const [places, Setplaces] = useState()
-    const [placeChange, Pickplace] = useState()
+    const [placeChange, Pickplace] = useState('Venkulam')
     const [SubmitPlace, SetSubmitPlace] = useState()
 
     const [modalmaincats, Setmodalmaincats] = useState(false)
     const [maincats, Setmaincats] = useState()
-    const [mainchange, Pickmaincat] = useState()
+    const [mainchange, Pickmaincat] = useState('Select One Category')
     const [submitmain, Setsubmitmain] = useState()
 
     const [modalsubcat, Setmodalsubcat] = useState(false)
     const [subcat, Setsubcats] = useState()
-    const [subchange, Picksubcat] = useState()
+    const [subchange, Picksubcat] = useState('Select One Category')
     const [SubmitSubcat, SetSubmitsubcat] = useState()
 
-    const [QueryParams, SetQueryParams] = useState({})
+    const [QueryParams, SetQueryParams] = useState({ "&place=": 1 })
 
 
     useEffect(() => {
@@ -45,14 +45,14 @@ const Contactlist = () => {
             Pickplace(item.titile_e)
             SetSubmitPlace(item.id)
 
+
         } else {
             Obj[params] = item.slug
 
             // console.log(Obj);
             if (params == '&main_cat=') {
 
-                Pickmaincat(item.titile_e+'  '+item.titile_m)
-                console.log(mainchange);
+                Pickmaincat(item.titile_e + '  ' + item.titile_m)
                 FetchSubcat(item.slug)
                 Setsubmitmain(item.slug)
                 Picksubcat('Select One Category')
@@ -63,17 +63,32 @@ const Contactlist = () => {
             }
         }
 
+
         SetQueryParams(Obj)
         Setmodalmaincats(false)
         Setmodalsubcat(false)
     }
 
     const FetchSubcat = async (slug) => {
-        const source = '/contact/list/sub-category/?main_cat=' + slug;
-        const method = 'GET';
-        const params = '';
-        const result = await Apidatas(source, method, params)
-        Setsubcats(result)
+        // console.log(slug);
+        if (slug != '') {
+            const source = '/contact/list/sub-category/?main_cat=' + slug;
+            const method = 'GET';
+            const params = '';
+            const result = await Apidatas(source, method, params)
+            // console.log(result + 'notnull');
+
+            Setsubcats(result)
+        } else {
+            const source = '/contact/list/sub-category/';
+            const method = 'GET';
+            const params = '';
+            const result = await Apidatas(source, method, params)
+            // console.log(result);
+            Setsubcats(result)
+
+        }
+        // console.log(subcat);
     }
     const Reset = () => {
         Picksubcat('Select One Category')
@@ -91,6 +106,7 @@ const Contactlist = () => {
         for (const x in QueryParams) {
             sum = sum + (`${x}${QueryParams[x]}`);
         }
+
         let source = ''
         const method = 'GET';
         const params = '7';
@@ -101,11 +117,13 @@ const Contactlist = () => {
             result = await Apidatas(source, method, params)
             Setcontact(result)
         }
-            Setdropdown(false)
-        
+        Setdropdown(false)
+        // console.log(placeChange);
+        // console.log(SubmitPlace);
     }
 
     const Fetchdata = async () => {
+        FetchSubcat('')
         const source1 = '/contact/list/places/';
         const method1 = 'GET';
         const params1 = '';
