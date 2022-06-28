@@ -88,7 +88,7 @@ const Contactlist = () => {
             Setsubcats(result)
 
         }
-        // console.log(subcat);
+        // console.log(subcat); 
     }
     const Reset = () => {
         Picksubcat('Select One Category')
@@ -112,7 +112,6 @@ const Contactlist = () => {
         const params = '7';
         let result = []
         if (sum != '') {
-
             source = '/contact/list/contacts/?' + sum;
             result = await Apidatas(source, method, params)
             Setcontact(result)

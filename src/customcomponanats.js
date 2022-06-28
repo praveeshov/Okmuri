@@ -62,31 +62,43 @@ export const Footer = ({ ...props }) => {
     )
 }
 export const Inputbox = ({ ...props }) => {
-    const { onPress, text, placeholder } = props;
+    const { onPress, text, placeholder, emptycheck,title ,emptycheck1} = props;
+    console.log(emptycheck);
     return (
-        <TouchableOpacity style={{ borderRadius: 10, padding: 20, marginVertical: 5, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff', borderColor: 'blue', borderWidth: 1 }} onPress={onPress}>
-            {/* <TextInput placeholderTextColor={'#000'} placeholder={placeholder}  editable={false} style={[look.input,  { paddingLeft: 10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' ,fontSize:18,fontWeight:'bold',}]} numberOfLines={1} value={text}>
+        <View>
+            <Text style={[styles.testnew, { color: emptycheck1 }]}>{title}</Text>
+
+
+            <TouchableOpacity style={{ borderRadius: 10, padding: 20, marginVertical: 5, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff', borderColor: emptycheck, borderWidth: 1 }} onPress={onPress}>
+                {/* <TextInput placeholderTextColor={'#000'} placeholder={placeholder}  editable={false} style={[look.input,  { paddingLeft: 10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' ,fontSize:18,fontWeight:'bold',}]} numberOfLines={1} value={text}>
             </TextInput> */}
-            <View style={{  width: '70%' }}>
+                <View style={{ width: '70%' }}>
 
-                <Text style={{ color: text == placeholder ? '#b3b3b5' : 'blue', fontSize: 18, fontWeight: 'bold' }} numberOfLines={1}>{text}</Text>
-            </View>
-            <View style={{ alignSelf: 'center' }}>
+                    <Text style={{ color: text == placeholder ? '#b3b3b5' : 'blue', fontSize: 18, fontWeight: 'bold' }} numberOfLines={1}>{text}</Text>
+                </View>
+                <View style={{ alignSelf: 'center' }}>
 
-                <Image style={{ width: 10, height: 10 }} source={require('./assets/images/down.png')}></Image>
-            </View>
-        </TouchableOpacity>
+                    <Image style={{ width: 10, height: 10 }} source={require('./assets/images/down.png')}></Image>
+                </View>
+            </TouchableOpacity>
+        </View>
     )
 }
 
 export const SinmpleInputbox = ({ ...props }) => {
-    const { onPress, text, placeholder } = props;
-    return (
-        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={onPress}>
-            <TextInput placeholderTextColor={'#b3b3b5'} placeholder={placeholder} style={[look.input, { paddingLeft: 10, borderColor: 'blue', borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text}>
-            </TextInput>
+    const { onPress, text, placeholder, onChangeText, emptycheck ,title,emptycheck1} = props;
 
-        </TouchableOpacity>
+    return (
+        <View>
+            <Text style={[styles.testnew, { color: emptycheck1 }]}>{title}</Text>
+
+
+            <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={onPress}>
+                <TextInput placeholderTextColor={'#b3b3b5'} placeholder={placeholder} style={[look.input, { paddingLeft: 10, borderColor: emptycheck, borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text} onChangeText={onChangeText}>
+                </TextInput>
+
+            </TouchableOpacity>
+        </View>
     )
 }
 
@@ -199,6 +211,8 @@ const look = StyleSheet.create({
     test: { color: '#fff', fontSize: 20, marginVertical: 15, fontFamily: 'NuosuSIL-Regular' },
     tests: { color: '#fff', fontSize: 20, marginVertical: 5, fontFamily: 'NuosuSIL-Regular' },
     tests1: { color: '#fff', fontSize: 15, marginVertical: 5, fontFamily: 'NuosuSIL-Regular' },
+    testnew: {  fontFamily: 'NuosuSIL-Regular', fontSize: 17, marginVertical: 5 },
+
     container: {
         flex: 1,
         justifyContent: "center"
