@@ -301,7 +301,7 @@ const Contactlist = () => {
                 // contentContainerStyle={{justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                 renderItem={({ item }) => {
                     return (
-                        <Listcard service={item.sub_cat.titile_e} maincat={item.main_cat.titile_e} text={item.name_e} text1={item.place.titile_e} phone={item.phone} source={{ uri: urls + item.sub_cat.image }} />
+                        <Listcard service={!1? item.sub_cat.titile_e:item.sub_cat.titile_m} maincat={item.main_cat.titile_e} text={item.name_e} text1={item.place.titile_e} phone={item.phone} source={{ uri: urls + item.sub_cat.image }} />
 
                     )
                 }}

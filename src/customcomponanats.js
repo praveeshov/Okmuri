@@ -63,7 +63,6 @@ export const Footer = ({ ...props }) => {
 }
 export const Inputbox = ({ ...props }) => {
     const { onPress, text, placeholder, emptycheck,title ,emptycheck1} = props;
-    console.log(emptycheck);
     return (
         <View>
             <Text style={[styles.testnew, { color: emptycheck1 }]}>{title}</Text>

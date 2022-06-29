@@ -3,41 +3,30 @@ import { useLinkProps } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { FlatList, Modal, View, StyleSheet, Text, Image, Alert, TextInput, TouchableOpacity, Picker, ScrollView } from 'react-native'
 import { Footer, Inputbox, Modals, Header } from "./customcomponanats";
+import { connect } from 'react-redux'
+import { selectLanguage } from './translation/actions'
+import { languages } from './translation/languages'
+import AsyncStorage  from '@react-native-async-storage/async-storage'
+
+
 
 
 const Settings = ({ ...props }) => {
-
-
-
-
 
     const DATA = [
         {
             id: 1,
             language: 'Malayalam',
+            key: 'malayalam'
 
         },
         {
             id: 2,
-            language: 'English'
+            language: 'English',
+            key: 'english'
         },
-        {
-            id: 3,
-            language: 'kannada'
-        },
-        {
-            id: 4,
-            language: 'Telugu'
-        },
-        {
-            id: 5,
-            language: 'marati'
-        }
+
     ];
-
-
-
-
 
     const [modalLAnguage, setModalLanguage] = useState(false);
     const [selectLanguage, setLanguage] = useState('Select Your Language');
@@ -45,12 +34,13 @@ const Settings = ({ ...props }) => {
     const [modalplace, setModalplace] = useState(false);
     const [SelectPlace, SetPlace] = useState([])
     const [PickPlace, SetPickPlace] = useState('Select Your Place')
+    const [globalLanguage,setGlobalLanguage]=useState('english')
+    
 
     useEffect(() => {
         FetchData()
     }, [])
     const FetchData = async () => {
-
         try {
             const response = await fetch('http://3.145.145.124:8000/contact/list/places/')
             const json = await response.json();
@@ -61,30 +51,32 @@ const Settings = ({ ...props }) => {
         }
     }
 
-    const ChangeModalLanguage = (item) => {
-        // console.log(item);
-
-        setLanguage(item)
-        setModalLanguage(false)
+    const ChangeModalLanguage =async (props, item) => {
+        try {
+            let info = JSON.stringify(languages[item.key])
+            await AsyncStorage.setItem('language', info)
+            props.selectLanguage(languages[item.key])
+            setLanguage(item.language)
+            setModalLanguage(false)
+            // alert('Language successfully changed')
+        } catch (e) {
+            alert(e)
+        }
     }
     const ChangeModalplace = (items) => {
         // console.log(items);
         SetPickPlace(items)
         setModalplace(false)
     }
-
-    // const setmodalenable = () => {
-    //     console.warn('ddddddddddd');
-    //     setModalLanguage(true)
-    // }
-
+    const { change } = props.selectedLanguage;
     return (
+
         <View style={styles.mainview}>
-            <View style={{ flex: 5 }}>
+            <View style={{ flex: 4 }}>
 
                 <Header source={require('./assets/images/arrow-left.png')} text='Settings' />
                 <View style={{ marginTop: 15 }}>
-                    <Text style={styles.test}>Change your Language</Text>
+                    <Text style={styles.test}>{change}</Text>
                     {/* <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setModalLanguage(true)}>
                         <TextInput placeholderTextColor={'#000'} placeholder='Please Select your Language' editable={false} style={[styles.input, {borderColor:'blue',borderWidth:1, color: selectLanguage !== '' ? 'blue' : '#000' }]} value={selectLanguage}>
                         </TextInput>
@@ -113,7 +105,7 @@ const Settings = ({ ...props }) => {
                         }}
                         renderItem={({ item }) => {
                             return (
-                                <TouchableOpacity onPress={() => { ChangeModalLanguage(item.language) }} >
+                                <TouchableOpacity onPress={() => { ChangeModalLanguage(props, item) }} >
                                     <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.language}</Text>
                                 </TouchableOpacity>
                             )
@@ -152,7 +144,7 @@ const Settings = ({ ...props }) => {
 
 
             </View>
-            <View style={{ flex: 2, backgroundColor: '#0e1024' }}>
+            <View style={{ flex: 1, backgroundColor: '#0e1024' }}>
 
             </View>
             <View style={{ flex: .6, backgroundColor: '#0e1024', justifyContent: 'flex-end' }}>
@@ -169,6 +161,10 @@ const styles = StyleSheet.create({
     test1: { color: '#000' },
     input: { backgroundColor: '#fff', borderRadius: 10, marginVertical: 5, height: 60, width: '100%' }
 })
+const mapStateToProps = state => {
+    return {
+        selectedLanguage: state.language,
+    }
+}
+export default connect(mapStateToProps, { selectLanguage })(Settings);
 
-
-export default Settings;

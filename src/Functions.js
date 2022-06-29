@@ -1,3 +1,8 @@
+
+import AsyncStorage  from '@react-native-async-storage/async-storage'
+import {languages} from './translation/languages'
+
+
 async function Apidatas(source, methord,params) {
 
     const server = 'http://3.145.145.124:8000'
@@ -15,4 +20,16 @@ async function Apidatas(source, methord,params) {
    // http://3.145.145.124:8000/contact/list/contacts/?main_cat=other&place=3
    //http://3.145.145.124:8000/contact/list/contacts/?main_cat=other&place=3&sub_cat=itc
 }
-export { Apidatas };
+
+async function getActiveLanguage () {
+    var response = languages.english; 
+    const value = await AsyncStorage.getItem('language');
+    console.log(value,'value******************');
+    if (value !== null) {
+        response = JSON.parse(value)
+    }
+    return response;
+    
+
+}
+export {Apidatas,getActiveLanguage}

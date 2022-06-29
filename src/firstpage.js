@@ -1,10 +1,11 @@
 import { useLinkProps } from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 
 
-const Firstpage = ({...props}) => {
 
+
+const Firstpage = ({...props}) => {
     return (
 
         <View style={styles.mainview}>
