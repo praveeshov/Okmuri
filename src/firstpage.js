@@ -1,6 +1,6 @@
 import { useLinkProps } from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image ,StatusBar} from 'react-native';
 
 
 
@@ -9,6 +9,8 @@ const Firstpage = ({...props}) => {
     return (
 
         <View style={styles.mainview}>
+            <StatusBar backgroundColor={'#0e1024'} barStyle={'light-content'} />
+
             <View>
 
             </View>
@@ -33,7 +35,7 @@ const Firstpage = ({...props}) => {
                     <Text style={{ color: '#fff', fontSize: 20, fontWeight: '100' }}>  | Saifzoid</Text>
                 </View>
                 <TouchableOpacity onPress={()=> {props.navigation.navigate('MyTabs')}}>
-                    <Text style={{ color: '#fff' }}>SKIP   </Text>
+                    <Text style={{ color: '#fff' }}>SKIP   >>> </Text>
                 </TouchableOpacity>
             </View>
 

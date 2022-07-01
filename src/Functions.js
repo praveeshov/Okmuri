@@ -24,7 +24,6 @@ async function Apidatas(source, methord,params) {
 async function getActiveLanguage () {
     var response = languages.english; 
     const value = await AsyncStorage.getItem('language');
-    console.log(value,'value******************');
     if (value !== null) {
         response = JSON.parse(value)
     }
@@ -32,4 +31,10 @@ async function getActiveLanguage () {
     
 
 }
-export {Apidatas,getActiveLanguage}
+
+async function getActivelanguagekey(){
+    const value = await AsyncStorage.getItem('languagekey');
+    return value;
+
+}
+export {Apidatas,getActiveLanguage,getActivelanguagekey}

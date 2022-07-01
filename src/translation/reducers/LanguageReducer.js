@@ -7,7 +7,6 @@ export default (state = INITIAL_STATE, action) => {
     // console.log(state,action,'languages');
  switch(action.type) {
   case 'language_data':
-
    return action.payload;
   default: 
    return state;

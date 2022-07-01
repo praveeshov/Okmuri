@@ -1,15 +1,19 @@
 import React from 'react'
 import { View, StyleSheet, Image, Text } from 'react-native'
 import { Header } from './customcomponanats'
+import { connect } from 'react-redux';
 
-const Aboutadmin = () => {
+
+const Aboutadmin = ({...props}) => {
+
+    const {aboutadmin,adminname}=props.selectedLanguage
 
     return (
         <View style={styles.maincat}>
-            <Header source={require('./assets/images/arrow-left.png')} text='About Admin' />
+            <Header source={require('./assets/images/arrow-left.png')} text={aboutadmin} navigation={props.navigation}/>
             <View style={styles.profile}>
                 <Image source={require('./assets/images/Iron.jpg')} style={{ width: 150, height: 150, borderRadius: 20, marginTop: 40 }} />
-                <Text style={{ color: '#FFF', fontSize: 30, fontWeight: '600', fontFamily: 'NuosuSIL-Regular', marginVertical: 20 }}>Iron Man PK</Text>
+                <Text style={{ color: '#FFF', fontSize: 30, fontWeight: '600', fontFamily: 'NuosuSIL-Regular', marginVertical: 20 }}>{adminname}</Text>
                 <Text style={styles.test}>React Native Developer</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 40 }}>
@@ -45,4 +49,9 @@ const styles = StyleSheet.create({
     test: { color: '#4b4f7a', fontSize: 22, fontWeight: '600', fontFamily: 'NuosuSIL-Regular' },
     test1: { color: '#fff', fontSize: 22, fontWeight: '600', fontFamily: 'NuosuSIL-Regular' },
 })
-export default Aboutadmin;
+const mapStateToProps = state => {
+    return { 
+      selectedLanguage: state.language,
+    }
+  }
+export default connect(mapStateToProps) (Aboutadmin);

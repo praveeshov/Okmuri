@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, Image, FlatList, TouchableOpacity } from "react-native"
+import { View, StyleSheet, Text, Image, FlatList, TouchableOpacity ,StatusBar} from "react-native"
+import { connect } from "react-redux";
 import { Cards, Header } from "./customcomponanats";
 import { Apidatas } from "./Functions";
 
@@ -21,22 +22,9 @@ const Dashboard = ({ ...props }) => {
         const params = '';
 
         const result = await Apidatas(source, method, params)
-        // console.log(result);
         setdatas(result)
         cardclic(result[0].slug)
-        // try {
-        //     const response = await fetch(
-        //         'http://3.145.145.124:8000/contact/list/category/'
-        //     );
-
-        //     const json = await response.json();
-
-        //     setdatas(json)
-        //     // setslug(json[0].slug)
-        //     cardclic(json[0].slug)
-        // } catch (error) {
-        //     console.error(error);
-        // }
+      
 
     }
 
@@ -47,36 +35,26 @@ const Dashboard = ({ ...props }) => {
         const params = '';
 
         const result = await Apidatas(source, method, params)
-        // console.log(result);
         setsubcategory(result)
         setslug(slug)
-        // try {
-        //     // console.log(slug);
-        //     const response = await fetch(
-        //         'http://3.145.145.124:8000/contact/list/sub-category/?main_cat=' + slug
-
-        //     );
-        //     const json = await response.json();
-        //     setsubcategory(json)
-        //     setslug(slug)
-        // } catch (error) {
-        //     console.log(error);
-        // }
-
+       
 
 
     }
 
 
     const [services, setservice] = useState([]);
+    const {dashboard,main}=props.selectedLanguage
     const urls = 'http://3.145.145.124:8000'
 
 
     return (
         <View style={styles.mainview}>
+            <StatusBar backgroundColor={'#0e1024'} barStyle={'light-content'} />
+
             <View>
-                <Text style={styles.test}>Dashboard</Text>
-                <Text style={styles.test1}>Main Categories</Text>
+                <Text style={styles.test}>{dashboard}</Text>
+                <Text style={styles.test1}>{main}</Text>
             </View>
             <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
                 <FlatList data={datas} numColumns={2}
@@ -131,5 +109,10 @@ const styles = StyleSheet.create({
     test: { color: '#fff', fontSize: 30, fontFamily: 'NuosuSIL-Regular' },
     test1: { color: '#fff', fontSize: 20, marginVertical: 15, fontFamily: 'NuosuSIL-Regular' },
 })
-
-export default Dashboard;
+const mapStateToProps = state => {
+    // console.log(state);
+    return {
+        selectedLanguage: state.language,
+    }
+}
+export default connect(mapStateToProps) (Dashboard);

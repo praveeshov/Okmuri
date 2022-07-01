@@ -85,7 +85,7 @@ export const Inputbox = ({ ...props }) => {
 }
 
 export const SinmpleInputbox = ({ ...props }) => {
-    const { onPress, text, placeholder, onChangeText, emptycheck ,title,emptycheck1} = props;
+    const {type, onPress, text, placeholder, onChangeText, emptycheck ,title,emptycheck1} = props;
 
     return (
         <View>
@@ -93,7 +93,7 @@ export const SinmpleInputbox = ({ ...props }) => {
 
 
             <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={onPress}>
-                <TextInput placeholderTextColor={'#b3b3b5'} placeholder={placeholder} style={[look.input, { paddingLeft: 10, borderColor: emptycheck, borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text} onChangeText={onChangeText}>
+                <TextInput keyboardType={type} placeholderTextColor={'#b3b3b5'} placeholder={placeholder} style={[look.input, { paddingLeft: 10, borderColor: emptycheck, borderWidth: 1, color: text !== '' ? 'blue' : '#000' }]} value={text} onChangeText={onChangeText}>
                 </TextInput>
 
             </TouchableOpacity>
@@ -150,10 +150,14 @@ export const Activeindicator = () => (
 );
 
 export const Header = ({ ...props }) => {
-    const { source, text } = props
+    const { source, text,navigation } = props
+const g=()=>{
+
+    this.props.navigation.goBack();
+}
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>props.navigation.goBack()}>
                 <Image style={{ width: 30, height: 30 }} source={source} />
             </TouchableOpacity>
             <Text style={{ color: '#fff', fontSize: 30, fontFamily: 'NuosuSIL-Regular' }}> {text}</Text>
@@ -161,7 +165,7 @@ export const Header = ({ ...props }) => {
     )
 }
 export const Listcard = ({ ...props }) => {
-    const { source, text, text1, phone, service, maincat } = props
+    const { source, text, text1, phone, service, maincat ,ph,sr} = props
     return (
         <View style={{ backgroundColor: '#201b42', padding: 20, marginVertical: 5, borderRadius: 10 }}>
             <View style={{ flexDirection: 'row', }}>
@@ -175,12 +179,15 @@ export const Listcard = ({ ...props }) => {
                 </View>
             </View>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row', marginVertical: 10 }}>
-                <Text style={look.cadtext}>Phone:</Text>
+                <Text style={look.cadtext}>{ph}:</Text>
                 <Text style={look.cadtext}>{phone}</Text>
             </View>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                <Text style={look.cadtext}>Service:</Text>
+                <Text style={look.cadtext}>{sr}:</Text>
+                <View style={{width:'70%',alignItems:'flex-end'}}>
+
                 <Text style={look.cadtext}>{maincat}  ({service})</Text>
+                </View>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                 <TouchableOpacity style={look.cntctbtn}>
@@ -221,6 +228,6 @@ const look = StyleSheet.create({
         justifyContent: "space-around",
         padding: 10
     },
-    cadtext: { color: '#fff', fontSize: 20, fontFamily: 'NuosuSIL-Regular' },
+    cadtext: { color: '#fff', fontSize: 20, fontFamily: 'NuosuSIL-Regular' ,textAlign:'right'},
     cntctbtn: { backgroundColor: '#181336', width: '48%', height: 50, marginTop: 10, borderRadius: 10, justifyContent: 'center' }
 })
