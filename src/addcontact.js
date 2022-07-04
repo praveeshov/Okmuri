@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid,Modal, View, Text, Image, StyleSheet, FlatList, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, TextInput } from 'react-native';
+import {  ToastAndroid, Modal, View, Text, Image, StyleSheet, FlatList, TouchableOpacity, ScrollView, ActivityIndicator, StatusBar, TextInput } from 'react-native';
 import { SinmpleInputbox, Inputbox, Modals, Activeindicator, Header, } from './customcomponanats';
 import { Apidatas } from './Functions';
 import { connect } from 'react-redux';
 
-const Addcontact = ({...props}) => {
+const Addcontact = ({ ...props }) => {
 
     const [modalplace, SetModalPlace] = useState(false)
     const [Selectplaces, setSelectplace] = useState([]);
@@ -33,7 +33,9 @@ const Addcontact = ({...props}) => {
 
 
     }, [])
+
     
+
     const fetchdata = async () => {
         const source = '/contact/list/places/';
         const methord = 'GET'
@@ -134,48 +136,85 @@ const Addcontact = ({...props}) => {
         // }
         let sum = []
         for (const key in arr) {
-            
+
             if (arr[key] == ' ' || arr[key] == 0) {
                 sum.push(key)
-                
+
             }
-             
+
         }
-        
+
         setAllsum(sum)
-    
+
+        // for (const x in sum) {
+        //     if (sum[x] == 'name_e') {
+        //         ToastAndroid.show('Enter english name', ToastAndroid.SHORT)
+        //     } else if (sum[x] == 'name_m') {
+        //         ToastAndroid.show('Enter malayalam name', ToastAndroid.SHORT)
+
+        //     } else if (sum[x] == 'phone') {
+        //         ToastAndroid.show('Enter phone number', ToastAndroid.SHORT)
+
+        //     } else if (sum[x] == 'place') {
+        //         ToastAndroid.show('select your place', ToastAndroid.SHORT)
+
+        //     } else if (sum[x] == 'main_cat') {
+        //         ToastAndroid.show('Select your main category', ToastAndroid.SHORT)
+
+        //     } else if (sum[x] == 'sub_cat') {
+        //         ToastAndroid.show('Select your sub category', ToastAndroid.SHORT)
+
+        //     }
+        // }
+        // console.log(allsum.includes('name_e'));
+        // switch (sum) {
+        //     case sum.includes('name_e'):
+        //         console.log(sum, "-------")
+        //         break;
+        // }
+        // console.log(sum.includes('name_e'));
+        // console.log(sum[0]);
+
         for (const x in sum) {
-            if (sum[x] == 'name_e') {
-                ToastAndroid.show('Enter english name',ToastAndroid.SHORT)
-            } else if (sum[x] == 'name_m') {
-                ToastAndroid.show('Enter malayalam name',ToastAndroid.SHORT)
-
-            } else if (sum[x] == 'phone') {
-                ToastAndroid.show('Enter phone number',ToastAndroid.SHORT)
-
-            } else if (sum[x] == 'place') {
-                ToastAndroid.show('select your place',ToastAndroid.SHORT)
-
-            } else if (sum[x] == 'main_cat') {
-                ToastAndroid.show('Select your main category',ToastAndroid.SHORT)
-
-            } else if (sum[x] == 'sub_cat') {
-                ToastAndroid.show('Select your sub category',ToastAndroid.SHORT)
+            switch (sum[x]) {
+                case 'name_e':
+                    ToastAndroid.show('Enter english name', ToastAndroid.SHORT)
+                    break;
+                case 'name_m':
+                    ToastAndroid.show('Enter malayalam name', ToastAndroid.SHORT)
+                    break;
+                case 'phone':
+                    ToastAndroid.show('Enter phone number', ToastAndroid.SHORT)
+                    break;
+                case 'place':
+                    ToastAndroid.show('select your place', ToastAndroid.SHORT)
+                    break;
+                case 'main_cat':
+                    ToastAndroid.show('Select your main category', ToastAndroid.SHORT)
+                    break;
+                case 'sub_cat':
+                    ToastAndroid.show('Select your sub category', ToastAndroid.SHORT)
+                    break;
 
             }
         }
-        if(arr['phone'].length<10 && arr['phone'].length>1){
+        if (arr['phone'].length < 10 && arr['phone'].length >= 1) {
             sum.push('phone')
-            ToastAndroid.show('Enter minimum 10 numbers',ToastAndroid.SHORT)
-            
-        }
-        
-        if(sum.length==0){
-            Submit()
-            
+            ToastAndroid.show('Enter minimum 10 numbers', ToastAndroid.SHORT)
+
         }
 
-      
+
+
+
+        if (sum.length == 0) {
+            Submit()
+            reSet()
+            ToastAndroid.show('Submitted Succesfully ', ToastAndroid.SHORT)
+
+        }
+
+
     }
     const Submit = async () => {
         const requestValue = {
@@ -199,24 +238,24 @@ const Addcontact = ({...props}) => {
 
     };
 
-    const { splace ,name_e,name_m,number,maincat,subcat,submit,reset,addcontact} = props.selectedLanguage;
+    const { splace, name_e, name_m, number, maincat, subcat, submit, reset, addcontact } = props.selectedLanguage;
 
 
     return (
         <ScrollView style={styles.mainview}>
             <StatusBar backgroundColor={'#0e1024'} barStyle={'light-content'} />
-            <Header source={require('./assets/images/arrow-left.png')} text={addcontact} navigation={props.navigation}/>
+            <Header source={require('./assets/images/arrow-left.png')} text={addcontact} navigation={props.navigation} />
 
             {/* {indicator ?
             <Text style={styles.test}>jvtyvtyvgjyvgyvy</Text>
             :null} */}
             <View>
-                <SinmpleInputbox onChangeText={newText => setNameEnglish(newText)} text={nameEnglish} placeholder="Enter Your Name in English"  emptycheck={allsum.includes('name_e')?'red':'blue'} emptycheck1={allsum.includes('name_e')?'red':'#fff'} title={name_e}></SinmpleInputbox>
-                <SinmpleInputbox onChangeText={newText => setNameMalayalam(newText)} text={nameMalayalam} placeholder="Enter Your Name in Malayalam" emptycheck={allsum.includes('name_m')?'red':'blue'} emptycheck1={allsum.includes('name_m')?'red':'#fff'} title={name_m}></SinmpleInputbox>
-                <SinmpleInputbox type='phone-pad' onChangeText={newText => setMobileNumber(newText)} text={moblieNumber} placeholder="Enter Your Mobile Number" emptycheck={allsum.includes('phone')?'red':'blue'} emptycheck1={allsum.includes('phone')?'red':'#fff'} title={number}></SinmpleInputbox>
-                <Inputbox placeholder={'Select Your Place'} text={place} onPress={() => inputClick()} emptycheck={allsum.includes('place')?'red':'blue'} title={splace} emptycheck1={allsum.includes('place')?'red':'#fff'}  ></Inputbox>
-                <Inputbox placeholder='Select One Category' text={Maincat} onPress={() => Maincatinputclick()} emptycheck={allsum.includes('main_cat')?'red':'blue'} title={maincat} emptycheck1={allsum.includes('main_cat')?'red':'#fff'} ></Inputbox>
-                <Inputbox placeholder='Select One Category' text={Subcat} onPress={() => showModalSubcat(!ModalSubcat)} emptycheck={allsum.includes('sub_cat')?'red':'blue'} title={subcat} emptycheck1={allsum.includes('sub_cat')?'red':'#fff'} ></Inputbox>
+                <SinmpleInputbox onChangeText={newText => setNameEnglish(newText)} text={nameEnglish} placeholder="Enter Your Name in English" emptycheck={allsum.includes('name_e') ? 'red' : 'blue'} emptycheck1={allsum.includes('name_e') ? 'red' : '#fff'} title={name_e}></SinmpleInputbox>
+                <SinmpleInputbox onChangeText={newText => setNameMalayalam(newText)} text={nameMalayalam} placeholder="Enter Your Name in Malayalam" emptycheck={allsum.includes('name_m') ? 'red' : 'blue'} emptycheck1={allsum.includes('name_m') ? 'red' : '#fff'} title={name_m}></SinmpleInputbox>
+                <SinmpleInputbox type='phone-pad' onChangeText={newText => setMobileNumber(newText)} text={moblieNumber} placeholder="Enter Your Mobile Number" emptycheck={allsum.includes('phone') ? 'red' : 'blue'} emptycheck1={allsum.includes('phone') ? 'red' : '#fff'} title={number}></SinmpleInputbox>
+                <Inputbox placeholder={'Select Your Place'} text={place} onPress={() => inputClick()} emptycheck={allsum.includes('place') ? 'red' : 'blue'} title={splace} emptycheck1={allsum.includes('place') ? 'red' : '#fff'}  ></Inputbox>
+                <Inputbox placeholder='Select One Category' text={Maincat} onPress={() => Maincatinputclick()} emptycheck={allsum.includes('main_cat') ? 'red' : 'blue'} title={maincat} emptycheck1={allsum.includes('main_cat') ? 'red' : '#fff'} ></Inputbox>
+                <Inputbox placeholder='Select One Category' text={Subcat} onPress={() => showModalSubcat(!ModalSubcat)} emptycheck={allsum.includes('sub_cat') ? 'red' : 'blue'} title={subcat} emptycheck1={allsum.includes('sub_cat') ? 'red' : '#fff'} ></Inputbox>
                 <View style={{ justifyContent: 'space-around', flexDirection: 'row', marginBottom: 50 }}>
                     <TouchableOpacity onPress={() => { reSet() }} style={{ borderColor: 'blue', borderWidth: 2, backgroundColor: '#fff', width: '45%', marginTop: 10, height: 60, alignSelf: 'center', borderRadius: 15, justifyContent: 'center' }}>
                         <Text style={{ color: 'blue', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>{reset}</Text>
@@ -290,12 +329,12 @@ const Addcontact = ({...props}) => {
     )
 }
 const mapStateToProps = state => {
-    return { 
-      selectedLanguage: state.language,
+    return {
+        selectedLanguage: state.language,
     }
-  }
+}
 export default connect(mapStateToProps)(Addcontact);
 const styles = StyleSheet.create({
-    test: {  fontFamily: 'NuosuSIL-Regular', fontSize: 17, marginVertical: 5 },
+    test: { fontFamily: 'NuosuSIL-Regular', fontSize: 17, marginVertical: 5 },
     mainview: { backgroundColor: '#0e1024', flex: 1, padding: 10 }
 })

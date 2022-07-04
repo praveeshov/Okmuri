@@ -79,7 +79,6 @@ const Settings = ({ ...props }) => {
                     <Inputbox text={selectLanguage} placeholder="Select Your Language" onPress={() => setModalLanguage(true)} />
                     <Text style={styles.test}>{splace}</Text>
                     <Inputbox text={PickPlace} placeholder="Select Your place" onPress={() => { setModalplace(true) }} />
-
                     <TouchableOpacity style={{ backgroundColor: 'blue', width: '100%', height: 60, marginTop: 35, alignSelf: 'center', borderRadius: 15, justifyContent: 'center' }}>
                         <Text style={{ color: '#FFF', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>{submit}</Text>
 
@@ -140,7 +139,7 @@ const Settings = ({ ...props }) => {
 const styles = StyleSheet.create({
 
     mainview: { backgroundColor: '#0e1024', flex: 1, padding: 15 },
-    test: { color: '#fff', fontSize: 20, marginVertical: 15, fontFamily: 'NuosuSIL-Regular' },
+    test: { color: '#fff', fontSize: 20, marginVertical: 0, fontFamily: 'NuosuSIL-Regular' },
     test1: { color: '#000' },
     input: { backgroundColor: '#fff', borderRadius: 10, marginVertical: 5, height: 60, width: '100%' }
 })

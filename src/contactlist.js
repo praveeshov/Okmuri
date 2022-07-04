@@ -12,7 +12,7 @@ import { Separator } from 'native-base';
 
 const Contactlist = ({ ...props }) => {
 
-
+    
 
     const [contact, Setcontact] = useState([])
 
@@ -165,7 +165,7 @@ const Contactlist = ({ ...props }) => {
                     <Image style={{ width: 30, height: 30, resizeMode: 'contain', alignSelf: 'center', }} source={require('./assets/images/selective.png')}></Image>
                 </View>
             </TouchableOpacity>
-            <Collapsible collapsed={isCollapsed}>
+            <Collapsible collapsed={isCollapsed} duration={500} >
                 <View style={{ backgroundColor: '#201b42', padding: 10 }}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -288,6 +288,7 @@ const Contactlist = ({ ...props }) => {
                     }}>
                 </FlatList>
             </Modals>
+           
 
         </View>
     )

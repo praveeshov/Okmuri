@@ -1,5 +1,5 @@
 import React, { Children, useState } from 'react';
-import { StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Image, DrawerItem, Modal, FlatList, ActivityIndicator } from 'react-native';
+import {Linking, StyleSheet, View, TextInput, Text, Button, TouchableOpacity, Image, DrawerItem, Modal, FlatList, ActivityIndicator } from 'react-native';
 import Settings from './Settings';
 import Dashboard from './dashboard';
 import styles from 'react-native-material-dropdown/src/components/dropdown/styles';
@@ -62,10 +62,10 @@ export const Footer = ({ ...props }) => {
     )
 }
 export const Inputbox = ({ ...props }) => {
-    const { onPress, text, placeholder, emptycheck,title ,emptycheck1} = props;
+    const { onPress, text, placeholder, emptycheck, title, emptycheck1 } = props;
     return (
         <View>
-            <Text style={[styles.testnew, { color: emptycheck1 }]}>{title}</Text>
+            <Text style={[look.testnew, { color: emptycheck1 }]}>{title}</Text>
 
 
             <TouchableOpacity style={{ borderRadius: 10, padding: 20, marginVertical: 5, flexDirection: 'row', justifyContent: 'space-between', backgroundColor: '#fff', borderColor: emptycheck, borderWidth: 1 }} onPress={onPress}>
@@ -85,11 +85,11 @@ export const Inputbox = ({ ...props }) => {
 }
 
 export const SinmpleInputbox = ({ ...props }) => {
-    const {type, onPress, text, placeholder, onChangeText, emptycheck ,title,emptycheck1} = props;
+    const { type, onPress, text, placeholder, onChangeText, emptycheck, title, emptycheck1 } = props;
 
     return (
         <View>
-            <Text style={[styles.testnew, { color: emptycheck1 }]}>{title}</Text>
+            <Text style={[look.testnew, { color: emptycheck1 }]}>{title}</Text>
 
 
             <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={onPress}>
@@ -150,22 +150,62 @@ export const Activeindicator = () => (
 );
 
 export const Header = ({ ...props }) => {
-    const { source, text,navigation } = props
-const g=()=>{
+    const { source, text, navigation } = props
+    const g = () => {
 
-    this.props.navigation.goBack();
-}
+        this.props.navigation.goBack();
+    }
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}>
-            <TouchableOpacity onPress={()=>props.navigation.goBack()}>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
                 <Image style={{ width: 30, height: 30 }} source={source} />
             </TouchableOpacity>
-            <Text style={{ color: '#fff', fontSize: 30, fontFamily: 'NuosuSIL-Regular' }}> {text}</Text>
+            <Text style={{ color: '#fff', fontSize: 25, fontFamily: 'NuosuSIL-Regular' }}> {text}</Text>
         </View>
     )
 }
 export const Listcard = ({ ...props }) => {
-    const { source, text, text1, phone, service, maincat ,ph,sr} = props
+
+    const callNumber = (phone) => {
+        let phoneNumber = phone;
+        if (Platform.OS !== 'android') {
+            phoneNumber = `telprompt:${phone}`;
+        }
+        else {
+            phoneNumber = `tel:${phone}`;
+        }
+        Linking.canOpenURL(phoneNumber)
+            .then(supported => {
+                if (!supported) {
+                    Alert.alert('Phone number is not available');
+                } else {
+                   
+                    return Linking.openURL(phoneNumber);
+                }
+            })
+            .catch(err => console.log(err));
+    };
+    const whatsApp = (phone) => {
+        let phoneNumber = phone;
+        if (Platform.OS !== 'android') {
+            phoneNumber = `telprompt:${phone}`;
+        }
+        else {
+            phoneNumber = `tel:${phone}`;
+        }
+        Linking.canOpenURL(phoneNumber)
+            .then(supported => {
+                if (!supported) {
+                    Alert.alert('Phone number is not available');
+                } else {
+                    return Linking.openURL('whatsapp://send?text=hello&phone='+phoneNumber)
+                }
+            })
+            .catch(err => console.log(err));
+    };
+
+
+    const { source, text, text1, phone, service, maincat, ph, sr } = props
     return (
         <View style={{ backgroundColor: '#201b42', padding: 20, marginVertical: 5, borderRadius: 10 }}>
             <View style={{ flexDirection: 'row', }}>
@@ -184,16 +224,16 @@ export const Listcard = ({ ...props }) => {
             </View>
             <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
                 <Text style={look.cadtext}>{sr}:</Text>
-                <View style={{width:'70%',alignItems:'flex-end'}}>
+                <View style={{ width: '70%', alignItems: 'flex-end' }}>
 
-                <Text style={look.cadtext}>{maincat}  ({service})</Text>
+                    <Text style={look.cadtext}>{maincat}  ({service})</Text>
                 </View>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                <TouchableOpacity style={look.cntctbtn}>
+                <TouchableOpacity onPress={()=>{whatsApp(phone)}} style={look.cntctbtn}>
                     <Image style={{ width: 30, height: 30, resizeMode: 'contain', alignSelf: 'center', }} source={require('./assets/images/whatsapp.png')}></Image>
                 </TouchableOpacity>
-                <TouchableOpacity style={look.cntctbtn}>
+                <TouchableOpacity onPress={()=>{callNumber(phone)}} style={look.cntctbtn}>
                     <Image style={{ width: 30, height: 30, resizeMode: 'contain', alignSelf: 'center', }} source={require('./assets/images/phone.png')}></Image>
 
                 </TouchableOpacity>
@@ -217,7 +257,7 @@ const look = StyleSheet.create({
     test: { color: '#fff', fontSize: 20, marginVertical: 15, fontFamily: 'NuosuSIL-Regular' },
     tests: { color: '#fff', fontSize: 20, marginVertical: 5, fontFamily: 'NuosuSIL-Regular' },
     tests1: { color: '#fff', fontSize: 15, marginVertical: 5, fontFamily: 'NuosuSIL-Regular' },
-    testnew: {  fontFamily: 'NuosuSIL-Regular', fontSize: 17, marginVertical: 5 },
+    testnew: { fontFamily: 'NuosuSIL-Regular', fontSize: 17, marginVertical: 5 },
 
     container: {
         flex: 1,
@@ -228,6 +268,6 @@ const look = StyleSheet.create({
         justifyContent: "space-around",
         padding: 10
     },
-    cadtext: { color: '#fff', fontSize: 20, fontFamily: 'NuosuSIL-Regular' ,textAlign:'right'},
+    cadtext: { color: '#fff', fontSize: 20, fontFamily: 'NuosuSIL-Regular', textAlign: 'right' },
     cntctbtn: { backgroundColor: '#181336', width: '48%', height: 50, marginTop: 10, borderRadius: 10, justifyContent: 'center' }
 })

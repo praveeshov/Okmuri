@@ -9,6 +9,7 @@
       android:icon="@mipmap/facebook"
       android:roundIcon="@mipmap/facebook"
       android:allowBackup="false"
+      android:usesCleartextTraffic="true"
       android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"

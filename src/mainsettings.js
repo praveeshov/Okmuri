@@ -1,167 +1,102 @@
 
 import { useLinkProps } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FlatList, Modal, View, StyleSheet, Text, Image, Alert, TextInput, TouchableOpacity, Picker, ScrollView } from 'react-native'
-import { Footer, Inputbox, Modals } from "./customcomponanats";
+import { Footer, Inputbox, Modals, Header } from "./customcomponanats";
+import { connect } from 'react-redux'
+import { selectLanguage } from './translation/actions'
+import { languages } from './translation/languages'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
-const MainSettings = ({...props}) => {
 
+
+const Settings = ({ ...props }) => {
 
     const DATA = [
         {
             id: 1,
             language: 'Malayalam',
+            key: 'malayalam'
 
         },
         {
             id: 2,
-            language: 'English'
+            language: 'English',
+            key: 'english'
         },
-        {
-            id: 3,
-            language: 'kannada'
-        },
-        {
-            id: 4,
-            language: 'Telugu'
-        },
-        {
-            id: 5,
-            language: 'marati'
-        }
+
     ];
 
-
-    const DATAPLACE = [
-        {
-            id: 1,
-            place: 'kochi',
-
-        },
-        {
-            id: 2,
-            place: 'Alappuzha'
-        },
-        {
-            id: 3,
-            place: 'Kannur'
-        },
-        {
-            id: 4,
-            place: 'Palakkad'
-        },
-        {
-            id: 5,
-            place: 'Thrissur'
-        },
-        {
-            id: 6,
-            place: 'Kazarkod'
-        },
-        {
-            id: 7,
-            place: 'Vayanad'
-        },
-        {
-            id: 8,
-            place: 'Pathanamthitta'
-        },
-        {
-            id: 9,
-            place: 'Kozhikod'
-        },
-        {
-            id: 10,
-            place: 'Malappuram'
-        },
-        {
-            id: 11,
-            place: 'Idukki'
-        },
-        {
-            id: 12,
-            place: 'Alappuzha'
-        },
-        {
-            id: 13,
-            place: 'Kannur'
-        },
-        {
-            id: 14,
-            place: 'Palakkad'
-        },
-        {
-            id: 15,
-            place: 'Thrissur'
-        },
-        {
-            id: 16,
-            place: 'Kazarkod'
-        },
-        {
-            id: 17,
-            place: 'Vayanad'
-        },
-        {
-            id: 18,
-            place: 'Pathanamthitta'
-        },
-    ];
     const [modalLAnguage, setModalLanguage] = useState(false);
-    const [selectLanguage, setLanguage] = useState();
+    const [selectLanguage, setLanguage] = useState('Select Your Language');
+
     const [modalplace, setModalplace] = useState(false);
-    const [SelectPlace, SetPlace] = useState()
+    const [SelectPlace, SetPlace] = useState([])
+    const [PickPlace, SetPickPlace] = useState('Select Your Place')
+    const [globalLanguage, setGlobalLanguage] = useState('english')
 
 
-    const ChangeModalLanguage = (item) => {
-        // console.log(item);
-        
-        setLanguage(item)
-        setModalLanguage(false)
+    useEffect(() => {
+        FetchData()
+    }, [])
+    const FetchData = async () => {
+        try {
+            const response = await fetch('http://3.145.145.124:8000/contact/list/places/')
+            const json = await response.json();
+            SetPlace(json)
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const ChangeModalLanguage = async (props, item) => {
+        try {
+            let info = JSON.stringify(languages[item.key])
+            await AsyncStorage.setItem('language', info)
+            await AsyncStorage.setItem('languagekey', item.key)
+            props.selectLanguage(languages[item.key])
+            setLanguage(item.language)
+            setModalLanguage(false)
+        } catch (e) {
+            alert(e)
+        }
     }
     const ChangeModalplace = (items) => {
-        SetPlace(items)
+        SetPickPlace(items)
         setModalplace(false)
     }
-
-    // const setmodalenable = () => {
-    //     console.warn('ddddddddddd');
-    //     setModalLanguage(true)
-    // }
-
+    const { change, splace, submit, } = props.selectedLanguage;
     return (
-        <View style={styles.mainview}>
-            <View style={{ flex: 5 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}>
-                    <Image style={{ width: 30, height: 30 }} source={require('./assets/images/arrow-left.png')} />
-                    <Text style={{ color: '#fff', fontSize: 30, fontFamily: 'NuosuSIL-Regular' }}>  Settings</Text>
-                </View>
-                <View style={{ marginTop: 15 }}>
-                    <Text style={styles.test}>Change your Language</Text>
-                    {/* <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }} onPress={() => setModalLanguage(true)}>
-                        <TextInput placeholderTextColor={'#000'} placeholder='Please Select your Language' editable={false} style={[styles.input, {borderColor:'blue',borderWidth:1, color: selectLanguage !== '' ? 'blue' : '#000' }]} value={selectLanguage}>
-                        </TextInput>
-                        <View style={{ position: 'relative', top: 25, right: 30 }}>
 
-                            <Image style={{ width: 10, height: 10 }} source={require('./assets/images/down.png')}></Image>
-                        </View>
-                    </TouchableOpacity> */}
+        <View style={styles.mainview}>
+            <View style={{ flex: 4 }}>
+
+                <Header source={require('./assets/images/arrow-left.png')} text='Settings' navigation={props.navigation}/>
+                <View style={{ marginTop: 15 }}>
+                    <Text style={styles.test}>{change}</Text>
                     <Inputbox text={selectLanguage} placeholder="Select Your Language" onPress={() => setModalLanguage(true)} />
-                    <Text style={styles.test}>Change your Place</Text>
-                    <Inputbox text={SelectPlace} placeholder="Select Your place" onPress={() =>  setModalplace(true) }/>
+                    <Text style={styles.test}>{splace}</Text>
+                    <Inputbox text={PickPlace} placeholder="Select Your place" onPress={() => { setModalplace(true) }} />
 
                     <TouchableOpacity style={{ backgroundColor: 'blue', width: '100%', height: 60, marginTop: 35, alignSelf: 'center', borderRadius: 15, justifyContent: 'center' }}>
-                        <Text style={{ color: '#FFF', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>Submit</Text>
+                        <Text style={{ color: '#FFF', fontSize: 22, fontWeight: '600', alignSelf: 'center', fontFamily: 'NuosuSIL-Regular' }}>{submit}</Text>
 
                     </TouchableOpacity>
                 </View>
-                <Modals visible={modalLAnguage}  onRequestClose={() => { setModalLanguage(false) }}  >
+                <Modals visible={modalLAnguage} onRequestClose={() => { setModalLanguage(false) }}  >
                     <FlatList contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
                         data={DATA}
+                        ListHeaderComponent={() => {
+                            return (
+
+                                <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select your Language</Text></View>
+                            )
+                        }}
                         renderItem={({ item }) => {
                             return (
-                                <TouchableOpacity onPress={()=>ChangeModalLanguage(item.language)} >
+                                <TouchableOpacity onPress={() => { ChangeModalLanguage(props, item) }} >
                                     <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.language}</Text>
                                 </TouchableOpacity>
                             )
@@ -174,30 +109,29 @@ const MainSettings = ({...props}) => {
 
 
 
-                <Modals visible={modalplace}  onRequestClose={() => { setModalplace(false) }}  >
+                <Modals visible={modalplace} onRequestClose={() => { setModalplace(false) }}  >
                     <FlatList contentContainerStyle={{ justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', }}
-                        data={DATAPLACE}
+                        data={SelectPlace}
+                        ListHeaderComponent={() => {
+                            return (
+
+                                <View><Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>Select your place</Text></View>
+                            )
+                        }}
                         renderItem={({ item }) => {
                             return (
-                                <TouchableOpacity onPress={()=>ChangeModalplace(item.place)} >
-                                    <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.place}</Text>
+                                <TouchableOpacity onPress={() => { ChangeModalplace(item.titile_e) }}>
+                                    <Text style={{ margin: 20, color: '#000', fontWeight: 'bold', fontSize: 20 }}>{item.titile_e}    ({item.titile_m})</Text>
                                 </TouchableOpacity>
                             )
                         }}
                     >
                     </FlatList>
                 </Modals>
-
-
-
-
-
             </View>
-            <View style={{ flex: 2, backgroundColor: '#0e1024' }}>
-
+            <View style={{ flex: 1, backgroundColor: '#0e1024' }}>
             </View>
             <View style={{ flex: .6, backgroundColor: '#0e1024', justifyContent: 'flex-end' }}>
-                {/* <Footer navigation={props.navigation} /> */}
             </View>
         </View >
     )
@@ -210,6 +144,10 @@ const styles = StyleSheet.create({
     test1: { color: '#000' },
     input: { backgroundColor: '#fff', borderRadius: 10, marginVertical: 5, height: 60, width: '100%' }
 })
+const mapStateToProps = state => {
+    return {
+        selectedLanguage: state.language,
+    }
+}
+export default connect(mapStateToProps, { selectLanguage })(Settings);
 
-
-export default MainSettings;
